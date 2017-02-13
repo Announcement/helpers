@@ -1,7 +1,7 @@
 import clone from '../src/clone.js'
 import {expect} from 'chai'
 
-describe('array', function () {
+describe('clone', function () {
   let sample = {a: 2}
 
   it('should clone an object', function () {
