@@ -2,7 +2,7 @@ import clone from '../src/clone.js'
 import {expect} from 'chai'
 
 describe('array', function () {
-  let sample = {a: 1}
+  let sample = {a: 2}
 
   it('should clone an object', function () {
     let copy = clone(sample);
@@ -13,8 +13,8 @@ describe('array', function () {
   it('should allow individual mutations', function () {
     let copy = clone(sample)
 
-    copy.a = 2
+    copy.a = 1
 
-    expect(sample.a).to.be.eql(1)
+    expect(sample.a).to.be.eql(2)
   })
 })
