@@ -1,4 +1,4 @@
-import as from '../src/as.js'
+import * as as from '../src/as.js'
 import {expect} from 'chai'
 
 describe('as', function () {

@@ -14,4 +14,12 @@ let as = {
   attempt
 }
 
-export {as as default}
+export {
+  as as default,
+  array,
+  pair,
+  method,
+  flatten,
+  decomposed,
+  attempt
+}

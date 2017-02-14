@@ -1,4 +1,4 @@
-import helpers from '../src/helpers.js'
+import * as helpers from '../src/helpers.js'
 import {expect} from 'chai'
 
 describe('helpers', function () {

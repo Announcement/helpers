@@ -3,32 +3,32 @@ import {expect} from 'chai'
 
 describe('is', function () {
   context('element', function(){
-    it('should be an existant property', function () {
-      expect(as.array).to.exist
+    it('should be an existent property', function () {
+      expect(is.element).to.exist
     })
   })
 
   context('fragment', function() {
-    it('should be an existant property', function() {
-      expect(as.pair).to.exist
+    it('should be an existent property', function() {
+      expect(is.fragment).to.exist
     })
   })
 
   context('text', function() {
-    it('should be an existant property', function() {
-      expect(as.method).to.exist
+    it('should be an existent property', function() {
+      expect(is.text).to.exist
     })
   })
 
   context('equal', function() {
-    it('should be an existant property', function() {
-      expect(as.flatten).to.exist
+    it('should be an existent property', function() {
+      expect(is.equal).to.exist
     })
   })
 
   context('existent', function() {
-    it('should be an existant property', function() {
-      expect(as.decomposed).to.exist
+    it('should be an existent property', function() {
+      expect(is.existent).to.exist
     })
   })
 })

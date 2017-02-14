@@ -1,5 +1,11 @@
 /** module helpers */
-import is from './is'
-import as from './as'
+import * as is from './is'
+import * as as from './as'
 
-export {is, as}
+let helpers = {is, as}
+
+export {
+  helpers as default,
+  as,
+  is
+}
