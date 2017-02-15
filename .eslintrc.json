@@ -5,9 +5,16 @@
       "es6": true,
       "mocha": true
   },
-  "extends": "standard",
+
+  "extends": [
+    "standard"
+  ],
+
   "plugins": [
     "standard",
     "promise"
-  ]
+  ],
+
+  "rules": {
+  }
 }

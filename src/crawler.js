@@ -1,14 +1,14 @@
 class Crawler {
-  constructor(method) {
+  constructor (method) {
     this.method = method
   }
 
-  consume(it) {
+  consume (it) {
     let object = it.value || it
     let name = it.name
-
+    var index
     if (object.constructor === Array) {
-      for (var index = 0; index < object.length; index++) {
+      for (index = 0; index < object.length; index++) {
         let item = object[index]
         let response = this.consume({name: index, value: item})
 
@@ -21,7 +21,7 @@ class Crawler {
     if (object.constructor === Object) {
       let keys = Object.keys(object)
 
-      for (var index = 0; index < keys.length; index++) {
+      for (index = 0; index < keys.length; index++) {
         let key = keys[index]
         let value = object[key]
         let response = this.consume({name: key, value: value})
@@ -35,7 +35,6 @@ class Crawler {
     return this.method({name, value: object})
   }
 }
-
 
 let a = {b: 'c'}
 let b = {b: 'd'}

@@ -5,7 +5,7 @@ describe('clone', function () {
   let sample = {a: 2}
 
   it('should clone an object', function () {
-    let copy = clone(sample);
+    let copy = clone(sample)
 
     expect(copy).to.be.an(typeof sample)
   })

@@ -1,6 +1,6 @@
-import json from 'rollup-plugin-json';
-import babel from 'rollup-plugin-babel';
-import sourcemaps from 'rollup-plugin-sourcemaps';
+import json from 'rollup-plugin-json'
+import babel from 'rollup-plugin-babel'
+import sourcemaps from 'rollup-plugin-sourcemaps'
 
 export default {
   entry: 'src/helpers.js',
@@ -12,16 +12,16 @@ export default {
     json(),
     babel({
       babelrc: false,
-      "presets": [
+      'presets': [
         [
-          "env",
+          'env',
           {
-            "modules": false
+            'modules': false
           }
         ]
       ],
-      "plugins": ["external-helpers"]
+      'plugins': ['external-helpers']
     })
   ],
   dest: 'bin/helpers.js'
-};
+}

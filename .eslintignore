@@ -1,0 +1,4 @@
+lib/**/*.js
+bin/**/*.js
+src/**/indev.*.js
+test/mocha.opts

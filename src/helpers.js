@@ -8,4 +8,10 @@ export {
   helpers as default,
   as,
   is
+  // clone,
+  // combine,
+  // has,
+  // inject,
+  // negated,
+  // prepare
 }

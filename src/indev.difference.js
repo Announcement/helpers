@@ -1,7 +1,5 @@
-function differences() {
-  let collection = [];
-
-  function arr(a, b) {
+function differences () {
+  function arr (a, b) {
     for (var c = 0; c < a.length; c++) {
       let f = a[c]
 
@@ -14,31 +12,31 @@ function differences() {
     }
   }
 
-  function obj(a, b) {
+  function obj (a, b) {
     let ak = Object.keys(a)
     let bk = Object.keys(b)
 
     let am = []
     let bm = []
 
-    for (var i = 0; i < ak.length; i++) {
+    var i
+
+    for (i = 0; i < ak.length; i++) {
       let av = ak[i]
 
-      if (bk.indexOf(av) === -1)
-        bm.push(av)
+      if (bk.indexOf(av) === -1) { bm.push(av) }
     }
 
-    for (var i = 0; i < bk.length; i++) {
+    for (i = 0; i < bk.length; i++) {
       let bv = ak[i]
 
-      if (ak.indexOf(bv) === -1)
-        am.push(bv)
+      if (ak.indexOf(bv) === -1) { am.push(bv) }
     }
 
     let keys = []
     let collection = ak.concat(bk)
 
-    for (var i = 0 i < collection.length; i++) {
+    for (i = 0; i < collection.length; i++) {
       let key = collection[i]
 
       if (am.indexOf(key) !== -1) {
@@ -56,21 +54,20 @@ function differences() {
       keys.push(key)
     }
 
-    for (var i = 0; i < keys.length; i++) {
+    for (i = 0; i < keys.length; i++) {
       let c = differences(a, b)
       console.log(c)
     }
   }
 
   for (var h = 0; h < arguments.length; h++) {
-    let arg0 = arguments[i]
+    let arg0 = arguments[h]
     let current = []
 
     for (var j = 0; j < arguments.length; j++) {
-      let arg1 = arguments[i]
+      let arg1 = arguments[j]
 
-      if (j === h)
-        continue
+      if (j === h) { continue }
 
       if (typeof arg0 !== typeof arg1) {
         current.push(`${h} and ${k} are different types`)

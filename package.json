@@ -7,6 +7,7 @@
     "test": "mocha"
   },
   "scripts": {
+    "pretest": "eslint **/*.js",
     "test": "mocha",
     "preversion": "rollup -c",
     "postversion": "babel src -d lib"
