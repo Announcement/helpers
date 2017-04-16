@@ -50,5 +50,4 @@ export default class Compare {
   existant () {
     return Compare.isExistant(this.reference)
   }
-
 }

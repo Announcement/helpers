@@ -8,6 +8,6 @@
  */
 function array (it) {
   return Array.prototype.slice.call(it, 0)
-};
+}
 
 export {array as default}

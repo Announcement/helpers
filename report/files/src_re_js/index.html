@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Plato - src\re.js</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/es-analysis/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>src\re.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"  data-container="body"></i></a></h2>
+      <p class="stat">74.95</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h2>
+      <p class="stat">324</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty" data-container="body"></i></a></h2>
+      <p class="stat">45.20</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs" data-container="body"></i></a></h2>
+      <p class="stat">0.60</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity" data-container="body"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">// var chalk = require(&#039;chalk&#039;)
+//
+// var logs = []
+// function highlight(string, index) {
+//   var colormap = []
+//   var result = []
+//   var i = 0
+//
+//   string = string
+//   .split(&#039;&#039;)
+//   .map(text =&gt; {
+//     return {
+//       color: &#039;white&#039;,
+//       text
+//     }
+//   })
+//
+//   string[index].color = &#039;blue&#039;
+//
+//   string = string
+//   .reduce((previous, current) =&gt; {
+//
+//     if (previous.constructor !== Array) {
+//       previous = [previous]
+//     }
+//
+//     var lastIndex = previous.length - 1
+//
+//     if (previous[lastIndex].color === current.color) {
+//       previous[lastIndex].text += current.text
+//     } else {
+//       previous.push(current)
+//     }
+//
+//     return previous
+//   })
+//   .reduce((previous, current) =&gt; {
+//     if (typeof previous !== &#039;string&#039;)
+//       previous = chalk[previous.color](previous.text)
+//
+//     return previous += chalk[current.color](current.text)
+//   })
+//
+//   return string
+// }
+//
+// class re {
+//   constructor(expression) {
+//     var tokens
+//     var ast
+//
+//     tokens = re.tokenize(expression)
+//     ast = re.parse(tokens)
+//
+//     this.expression = expression
+//     this.tokens = tokens
+//     this.ast = ast
+//   }
+//
+//   static tokenize(expression) {
+//     return expression
+//       .split(&#039;&#039;)
+//       .map((it, key) =&gt; {
+//         if (
+//           it === &#039;(&#039; ||
+//           it === &#039;)&#039; ||
+//           it === &#039;[&#039; ||
+//           it === &#039;]&#039; ||
+//           it === &#039;{&#039; ||
+//           it === &#039;}&#039; ||
+//           it === &#039;|&#039; ||
+//           it === &#039;+&#039; ||
+//           it === &#039;*&#039; ||
+//           it === &#039;?&#039; ||
+//           it === &#039;^&#039; ||
+//           it === &#039;$&#039; ||
+//           it === &#039;-&#039; ||
+//           it === &#039;\\&#039; ||
+//           it === &#039;.&#039; ||
+//           it === &#039;!&#039; ||
+//           it === &#039;,&#039; ||
+//           it === &#039;:&#039;)  {
+//           return {input: it, output: &#039;Operator&#039;, index: key}
+//         } else {
+//           return {input: it, output: &#039;Literal&#039;}
+//         }
+//       })
+//   }
+//
+//   static parse(tokens) {
+//     var ast
+//     var cache
+//
+//     ast = []
+//     cache = []
+//
+//     while (tokens.length) {
+//       var it
+//
+//       it = tokens.shift()
+//       cache.push(it)
+//
+//       if (it === &#039;(&#039;) {
+//         ast.push()
+//       }
+//
+//     }
+//
+//     return ast
+//   }
+// }
+//
+// function match(expression, input) {
+//   function regular(index) {
+//     var matches = input[index] == expression[index]
+//     var hasMore = input.length - 1 &gt; index &amp;&amp; expression.length - 1 &gt; index
+//
+//     logs.push(highlight(input, index))
+//
+//     if (matches)
+//       if (hasMore)
+//         return regular(index + 1)
+//       else
+//         return true
+//     return false
+//   }
+//
+//   return regular(0)
+// }
+
+// var fs = require(&#039;fs&#039;)
+
+// class Scanner {
+//
+// }
+//
+// class Evaluator {
+//
+// }
+//
+// class Tokenizer {
+//
+// }
+//
+// class Compiler {
+//
+// }
+
+function isCapitalLetter (character) {
+  let identity = character.charCodeAt(0)
+  return identity &gt;= 65 &amp;&amp; identity &lt;= 90
+}
+
+function isSmallLetter (character) {
+  let identity = character.charCodeAt(0)
+  return identity &gt;= 97 &amp;&amp; identity &lt;= 122
+}
+
+function isLetter (character) {
+  return isCapitalLetter(character) || isSmallLetter(character)
+}
+
+function isNumber (character) {
+  let identity = character.charCodeAt(0)
+  return identity &gt;= 48 &amp;&amp; identity &lt;= 57
+}
+
+function isAlphanumeric (character) {
+  return isNumber(character) || isLetter(character)
+}
+
+function isWordCharacter (character) {
+  return isAlphanumeric(character) || character === &#039;_&#039;
+}
+
+function isSpace (character) {
+  let identity = character.charCodeAt(0)
+  return (
+    identity === 32 ||
+    identity === 9 ||
+    identity === 13 ||
+    identity === 10
+  )
+}
+
+class Language {
+  static compile (tokens) {}
+  static tokenize (source) {}
+}
+
+class re extends Language {
+  static compile (tokens) {
+
+  }
+
+  static tokenize (source) {
+    // var scanned = re.scan(source)
+    // var evaluated = re.evaluate(scanned)
+  }
+
+  static scan (input) {
+    var cache = []
+    for (var i = 0; i &lt; input.length; i++) {
+      var item = {}
+      var character = input[i]
+      var length = cache.length
+
+      item.start = i
+      item.stop = i
+      item.length = 1
+
+      if (isWordCharacter(character)) {
+        item.type = &#039;Word&#039;
+      }
+
+      if (!isWordCharacter(character) &amp;&amp; !isSpace(character)) {
+        item.type = &#039;Symbol&#039;
+      }
+
+      if (isSpace(character)) {
+        item.type = &#039;Space&#039;
+      }
+
+      item.text = character
+
+      if (length === 0) {
+        cache.push(item)
+      } else if (cache[length - 1].type === item.type) {
+        cache[length - 1].text += item.text
+        cache[length - 1].stop = item.stop
+        cache[length - 1].length += item.length
+      } else {
+        cache.push(item)
+      }
+    }
+  }
+  static evaluate (input) {
+
+  }
+}
+
+export default re
+
+//
+// function f(x) {
+//   // console.log(x)
+//   var buffer = []
+//   var depth
+//
+//   depth = 0
+//
+//   for (var i = 0; i &lt; x.length; i++) {
+//     var current = x[i]
+//
+//     if (current === &#039;(&#039;) depth++
+//
+//     buffer.push({
+//       content: current,
+//       depth: depth
+//     })
+//
+//     if (current === &#039;)&#039;) depth--
+//   }
+//
+//   var brackets = (previous, current) =&gt; {
+//     if (previous.constructor !== Array)
+//       previous = [previous]
+//
+//     var item = previous.length - 1
+//
+//     if (previous[item].depth == 1 &amp;&amp; current.depth &gt;= 1) {
+//       previous[item].content += current.content
+//     } else if(previous[item].depth === 0 &amp;&amp; current.depth === 0) {
+//       previous[item].content += current.content
+//     } else {
+//       previous.push(current
+//     }
+//
+//     return previous
+//   }
+//
+//   var depth = (it) =&gt; {
+//     if (it.depth === 1)
+//       it.content = f(it.content.substring(1, it.content.length - 1))
+//     return it
+//   }
+//
+//   var content = (it) =&gt; {
+//     return it.content
+//   }
+//
+//   return buffer.reduce(brackets).map(depth).map(content)
+// }
+//
+// fs.readFile(&#039;src/inject.js&#039;, {encoding: &#039;utf-8&#039;}, function(error, data) {
+//   console.log(f(data))
+// })
+//
+// console.log(f(&#039;hello ((noun) world), how are (you (person)) today?&#039;))
+//
+// //
+// // {
+// //   var input = &#039;aabbba&#039;
+// //   var pattern = &#039;abbba&#039;
+// //
+// //   var result = match(pattern, input)
+// //
+// //   logs.push(result ? &#039;yes&#039; : &#039;no&#039;)
+// //
+// //   function output() {
+// //     if (logs.length &lt;= 0)
+// //       return false
+// //
+// //     var current = logs.shift()
+// //
+// //     process.stdout.clearLine()
+// //     process.stdout.cursorTo(0)
+// //     process.stdout.write(current)
+// //
+// //     setTimeout(output, 1000)
+// //   }
+// //
+// //   output()
+// // }</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ cyclomatic }} <br>
+    Length : {{ halstead.length }} <br>
+    Difficulty : {{ halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

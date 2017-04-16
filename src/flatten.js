@@ -16,7 +16,9 @@ function flatten (array) {
   toArray = (it) => isArray(it) ? it : [it]
   fromArray = (a, b) => a.concat(b)
 
-  while (array.some(isArray)) { array = array.map(toArray).reduce(fromArray) }
+  while (array.some(isArray)) {
+    array = array.map(toArray).reduce(fromArray)
+  }
 
   return array
 }

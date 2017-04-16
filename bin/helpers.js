@@ -1,3 +1,7 @@
+'use strict';
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
 /**
  * Appends values to an Array,
  * but first replaces undefined values before adding to the end
@@ -290,21 +294,75 @@ function prepare(it) {
   return tmp;
 }
 
+/**
+ * Detects if the needle is in the haystack.
+ * @function inside
+ *
+ * @param {Object|Array} haystack - what we are looking in
+ * @param {Object} needle - strict equal comparison compatible
+ *
+ * @return {Boolean} Whether or not the value could be located
+ */
+function inside(haystack, needle) {
+  var toValues = function toValues(object) {
+    return function (key) {
+      return object[key];
+    };
+  };
+  var isArray = function isArray(it) {
+    return it instanceof Array;
+  };
+  var isObject = function isObject(it) {
+    return (typeof it === 'undefined' ? 'undefined' : _typeof(it)) === 'object';
+  };
+  var values = function values(it) {
+    return Object.keys(it).map(toValues(it));
+  };
+
+  var areInside = function areInside(it) {
+    return inside(it, needle);
+  };
+
+  var insideArray = function insideArray() {
+    return haystack.some(areInside);
+  };
+  var insideObject = function insideObject() {
+    return values(haystack).some(areInside);
+  };
+
+  return haystack === needle || isArray(haystack) && insideArray(haystack, needle) || isObject(haystack) && insideObject(haystack, needle);
+}
+
+var element = function element(it) {
+  return it.nodeType === document.ELEMENT_NODE;
+};
+
+var fragment = function fragment(it) {
+  return it.nodeType === document.DOCUMENT_FRAGMENT_NODE;
+};
+
+var text = function text(it) {
+  return it.nodeType === document.TEXT_NODE;
+};
+
 var is = prepare({
-  element: function element(object) {
-    return object.nodeType === document.ELEMENT_NODE;
-  },
-
-  fragment: function fragment(object) {
-    return object.nodeType === document.DOCUMENT_FRAGMENT_NODE;
-  },
-
-  text: function text(object) {
-    return object.nodeType === document.TEXT_NODE;
-  },
-
+  element: element,
+  fragment: fragment,
+  text: text,
+  inside: inside,
   equal: equals,
-  existant: exists
+  existent: exists
+});
+
+
+
+var is$1 = Object.freeze({
+	default: is,
+	element: element,
+	fragment: fragment,
+	text: text,
+	equal: equals,
+	existent: exists
 });
 
 /**
@@ -341,7 +399,31 @@ var as = {
   attempt: attempt
 };
 
-/** module helpers */
 
-export { is, as };
+
+var as$1 = Object.freeze({
+	default: as,
+	array: array,
+	pair: pair,
+	method: curry,
+	flatten: flatten,
+	decomposed: decompose,
+	attempt: attempt
+});
+
+/** module helpers */
+// let helpers = {is, as}
+var are = is$1;
+
+// clone,
+// combine,
+// has,
+// inject,
+// negated,
+// prepare
+
+exports.is = is$1;
+exports.are = are;
+exports.as = as$1;
+
 //# sourceMappingURL=helpers.js.map

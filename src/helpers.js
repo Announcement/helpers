@@ -2,16 +2,12 @@
 import * as is from './is'
 import * as as from './as'
 
-let helpers = {is, as}
-
-export {
-  helpers as default,
-  as,
-  is
+// let helpers = {is, as}
+const are = is
+export {is, are, as}
   // clone,
   // combine,
   // has,
   // inject,
   // negated,
   // prepare
-}
