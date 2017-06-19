@@ -1,31 +1,21 @@
-import equals from './equals'
-import exists from './exists'
+import equal from './equals'
+import existent from './exists'
 import prepare from './prepare'
 import inside from './inside'
 
-let element = it =>
-  it.nodeType === document.ELEMENT_NODE
+const ELEMENT_NODE = 1
+const DOCUMENT_FRAGMENT_NODE = 11
+const TEXT_NODE = 3
 
-let fragment = it =>
-  it.nodeType === document.DOCUMENT_FRAGMENT_NODE
+let element = it => it.nodeType === ELEMENT_NODE
+let fragment = it => it.nodeType === DOCUMENT_FRAGMENT_NODE
+let text = it => it.nodeType === TEXT_NODE
 
-let text = it =>
-  it.nodeType === document.TEXT_NODE
-
-let is = prepare({
+export default prepare({
   element,
+  equal,
+  existent,
   fragment,
-  text,
   inside,
-  equal: equals,
-  existent: exists
+  text
 })
-
-export {
-  is as default,
-  element,
-  fragment,
-  text,
-  equals as equal,
-  exists as existent
-}

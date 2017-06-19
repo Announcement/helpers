@@ -1,28 +1,30 @@
 import array from './array'
+import single from './single'
+import exists from './exists'
 
 /**
- * Attempts to apply mutation to subject, return unmodified on failure
+ * Attempts to apply mutation to subject.
  *
  * @function attempt
  *
  * @see array
+ * @see single
+ * @see exists
  *
- * @param {Function} mutation - mutator function to be called on the subject
- * @param {Object} subject - any input that should be mutated
+ * @param {Function} mutation - Mutator function to be called on the subject.
+ * @param {Object} subject - Any input that should be mutated.
  *
- * @return {Object}
+ * @returns {Object} Subject unless mutation can be applied.
  */
-function attempt (mutation, subject) {
-  let parameters
-  let alternative
-  let response
+export default function (mutation, subject) {
+  var parameters
+  var result
+
+  let apply = (method, parameters) => method.apply(this, parameters)
+  let valid = it => exists(it) && single(it)
 
   parameters = array(arguments).slice(1)
-  alternative = parameters.length === 1 ? parameters[0] : parameters
+  result = apply(mutation, parameters)
 
-  response = mutation.apply(this, parameters)
-
-  return response || alternative
+  return valid(result) || valid(parameters)
 }
-
-export {attempt as default}

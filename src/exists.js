@@ -1,10 +1,11 @@
 /**
- * Checks to see if an item exists (isn't null or undefined)
+ * Checks to see if an item exists.
+ *
  * @function exists
  *
- * @param {Object} it - the item in question of existance
+ * @param {Object} it - The item in question of existance.
  *
- * @return {boolean}
+ * @returns {boolean} True, unless it is null or undefined.
  */
 function exists (it) {
   return it !== undefined && it !== null

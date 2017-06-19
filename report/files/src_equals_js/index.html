@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Plato - src\equals.js</title>
+  <title>Plato - src/equals.js</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
@@ -12,12 +12,12 @@
   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
   <![endif]-->
 
-  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
-  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
-  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
-  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
-  <link href="../../assets/css/plato.css" rel="stylesheet">
-  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet" type="text/css">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet" type="text/css">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet" type="text/css">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet" type="text/css">
+  <link href="../../assets/css/plato.css" rel="stylesheet" type="text/css">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet" type="text/css">
 
 </head>
 
@@ -30,13 +30,16 @@
       <li>
         <a href="../../index.html">Report Home</a>
       </li>
+      <li class="active">
+        <a href="display.html">Summary Display</a>
+      </li>
     </ul>
   </div>
 </div>
 
 <div class="jumbotron">
   <div class="container">
-    <h1>src\equals.js</h1>
+    <h1>src/equals.js</h1>
   </div>
 </div>
 
@@ -44,11 +47,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"  data-container="body"></i></a></h2>
-      <p class="stat">74.99</p>
+      <p class="stat">84.76</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h2>
-      <p class="stat">40</p>
+      <p class="stat">61</p>
     </div>
   </div>
   <div class="row historical">
@@ -62,11 +65,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty" data-container="body"></i></a></h2>
-      <p class="stat">23.91</p>
+      <p class="stat">24.30</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs" data-container="body"></i></a></h2>
-      <p class="stat">0.15</p>
+      <p class="stat">0.29</p>
     </div>
   </div>
 </div>
@@ -92,43 +95,64 @@
     <textarea id="file-source" class="col-md-12">import has from &#039;./has&#039;
 import pair from &#039;./pair&#039;
 import flatten from &#039;./flatten&#039;
+import similar from &#039;./similar&#039;
 
-/**
- * Compares reference object to another object
- *
- * @function equals
- *
- * @see has
- * @see pair
- *
- * @param {Object} reference - what should be compared to
- * @param {Object} object - what we are comparing
- *
- * @return {boolean}
- */
-function equals (r, o) {
-  // Are they of the same type?
-  if (typeof r !== typeof o || r.constructor !== o.constructor) {
-    return false
+export default function () {
+  return equals.apply(this, arguments)
+
+  /**
+   * Compares reference object to another object.
+   *
+   * @function equals
+   *
+   * @see has
+   * @see pair
+   *
+   * @param {Object} reference - What should be compared to.
+   * @param {Object} object - That matches the reference.
+   *
+   * @returns {boolean} True, unless they are not equal.
+   */
+  function equals (reference, object) {
+    return similar(reference, object) &amp;&amp; identical(reference, object)
   }
 
-  // Do we need to check recursively?
-  if (r.constructor !== Object) {
-    return r === o
-  }
+  /**
+   * Checks to see if two items of the same type and class are the same.
+   *
+   * @function identical
+   *
+   * @param {Object} reference - What should be compared to.
+   * @param {Object} object - A similar object to the reference.
+   *
+   * @returns {boolean} True, unless reference, object are different type or constructor.
+   */
+  function identical (reference, object) {
+    return test(reference, object) || pairs(reference, object)
 
-  return flatten([
-    pair(r),
-    pair(o)
-  ])
-  .every(item =&gt; {
-    return has(r)(item.key) &amp;&amp;
-      has(o)(item.key) &amp;&amp;
-      equals(r[item.key], o[item.key])
-  })
+    function test (reference, object) {
+      let isObject = () =&gt; reference.constructor === Object
+      let isEqual = () =&gt; reference === object
+
+      return !isObject() &amp;&amp; isEqual()
+    }
+
+    function pairs (reference, object) {
+      let asPair = it =&gt; pair(it)
+      let array = [reference, object].map(asPair)
+
+      return flatten(array).every(every)
+    }
+
+    function every (item) {
+      let both = it =&gt; has(reference)(it) &amp;&amp; has(object)(it)
+      let match = it =&gt; equals(reference[it], object[it])
+
+      return both(item.key) &amp;&amp; match(item.key)
+    }
+  }
 }
-
-export {equals as default}</textarea>
+</textarea>
   </div>
 </div>
 
@@ -140,10 +164,10 @@ export {equals as default}</textarea>
 
 <script type="text/html" id="complexity-popover-template">
   <div class="complexity-notice">
-    Complexity : {{ cyclomatic }} <br>
-    Length : {{ halstead.length }} <br>
-    Difficulty : {{ halstead.difficulty.toFixed(2) }} <br>
-    Est # bugs : {{ halstead.bugs.toFixed(2) }}<br>
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
   </div>
 </script>
 

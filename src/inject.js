@@ -1,33 +1,50 @@
 import attempt from './attempt'
 
 /**
- * Injects a transformer into each element of a collection
+ * Injects a transformer into each element of a collection.
  *
- * @name inject(it, transformer)
+ * @function inject
  *
  * @see attempt
  *
- * @param {Object} it - collection
- * @param {Function} tranform - mutator function
+ * @param {Object.<string, Function>} it - Collection of functions.
+ * @param {Function} transform - Mutator function to run through each of the functions in it.
  *
- * @return {Object.<string, Function>}
+ * @returns {Object.<string, Function>} All it functions, but mutated via transform.
  */
 function inject (it, transform) {
-  let copy = {}
+  var copy
+  var keys
 
-  function cycle (key, value) {
-    if (value === copy) { return false }
+  let isObject = it =>
+    typeof it === 'object' && it.constructor.name === 'Object'
 
-    if (typeof value === 'function') { return attempt(transform, value) }
+  let isFunction = it =>
+    typeof it === 'function' && it.constructor.name === 'Function'
 
-    if (typeof value === 'object') { return inject(value, transform) }
+  let forObject = it =>
+    isObject(it) && inject(it, transform)
 
-    // return value;
-  }
+  let forFunction = it =>
+    isFunction(it) && attempt(transform, it)
 
-  for (let key in it) { copy[key] = cycle(key, it[key]) }
+  keys = Object.keys(it)
+  copy = {}
+
+  keys.forEach(forEach)
 
   return copy
+
+  function forEach (key) {
+    var value
+
+    value = it[key]
+
+    value = attempt(forObject, value)
+    value = attempt(forFunction, value)
+
+    copy[key] = value
+  }
 }
 
-export {inject as default}
+export default inject

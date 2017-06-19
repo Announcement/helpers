@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Plato - src\array.js</title>
+  <title>Plato - src/array.js</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
@@ -12,12 +12,12 @@
   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
   <![endif]-->
 
-  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
-  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
-  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
-  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
-  <link href="../../assets/css/plato.css" rel="stylesheet">
-  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet" type="text/css">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet" type="text/css">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet" type="text/css">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet" type="text/css">
+  <link href="../../assets/css/plato.css" rel="stylesheet" type="text/css">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet" type="text/css">
 
 </head>
 
@@ -30,13 +30,16 @@
       <li>
         <a href="../../index.html">Report Home</a>
       </li>
+      <li class="active">
+        <a href="display.html">Summary Display</a>
+      </li>
     </ul>
   </div>
 </div>
 
 <div class="jumbotron">
   <div class="container">
-    <h1>src\array.js</h1>
+    <h1>src/array.js</h1>
   </div>
 </div>
 
@@ -62,11 +65,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty" data-container="body"></i></a></h2>
-      <p class="stat">4.38</p>
+      <p class="stat">3.43</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs" data-container="body"></i></a></h2>
-      <p class="stat">0.03</p>
+      <p class="stat">0.02</p>
     </div>
   </div>
 </div>
@@ -90,18 +93,18 @@
 <div class="container">
   <div class="row">
     <textarea id="file-source" class="col-md-12">/**
- * Lazy way of turning an item into an Array
+ * Lazy way of turning an item into an Array.
+ *
  * @function array
  *
- * @param {Object} it - Array like object
+ * @param {Object} it - Array like object.
  *
- * @return {Array} - implicit array object
+ * @returns {Array} Implicit array object.
  */
-function array (it) {
+export default function (it) {
   return Array.prototype.slice.call(it, 0)
-};
-
-export {array as default}</textarea>
+}
+</textarea>
   </div>
 </div>
 
@@ -113,10 +116,10 @@ export {array as default}</textarea>
 
 <script type="text/html" id="complexity-popover-template">
   <div class="complexity-notice">
-    Complexity : {{ cyclomatic }} <br>
-    Length : {{ halstead.length }} <br>
-    Difficulty : {{ halstead.difficulty.toFixed(2) }} <br>
-    Est # bugs : {{ halstead.bugs.toFixed(2) }}<br>
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
   </div>
 </script>
 

@@ -1,16 +1,28 @@
-import {is, as} from '../src/helpers.js'
+import * as helpers from '../src/helpers'
 import {expect} from 'chai'
 
-describe('helpers', function () {
-  context('is', function () {
+describe('Helpers', function () {
+  context('#is', function () {
     it('should be an existant property', function () {
-      expect(is).to.exist
+      expect(helpers.is).to.exist
     })
   })
 
-  context('as', function () {
+  context('#are', function () {
     it('should be an existant property', function () {
-      expect(as).to.exist
+      expect(helpers.are).to.exist
+    })
+  })
+
+  context('#as', function () {
+    it('should be an existant property', function () {
+      expect(helpers.as).to.exist
+    })
+  })
+
+  context('#query', function () {
+    it('should be an existant property', function () {
+      expect(helpers.query).to.exist
     })
   })
 })

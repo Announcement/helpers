@@ -1,25 +1,15 @@
-import array from './array'
-import pair from './pair'
-import method from './curry'
-import flatten from './flatten'
-import decomposed from './decompose'
-import attempt from './attempt'
-
-let as = {
-  array,
-  pair,
-  method,
-  flatten,
-  decomposed,
-  attempt
-}
+import * as array from './array'
+import * as pair from './pair'
+import * as method from './curry'
+import * as flatten from './flatten'
+import * as decomposed from './decompose'
+import * as attempt from './attempt'
 
 export {
-  as as default,
   array,
-  pair,
-  method,
-  flatten,
+  attempt,
   decomposed,
-  attempt
+  flatten,
+  method,
+  pair
 }

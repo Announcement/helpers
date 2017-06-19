@@ -1,43 +1,63 @@
 import combine from './combine'
 import array from './array'
+import empty from './empty'
 
 /**
- * Returns a modified function with lazy option assocations
+ * Returns a modified function with lazy option assocations.
  *
  * @function curry
  *
- * @param {Function} method - function to be curried
+ * @see combine
+ * @see array
+ * @see empty
  *
- * @return {Function} curried functions
+ * @param {Function} method - Function to be curried.
+ *
+ * @returns {Function} Curried functions.
  */
-function curry (method) {
-  /**
-  * Generated method through currying, allowing chainibility
+export default function (method) {
+  let enough = input => input.length >= method.length
+  let missing = input => input.some(empty)
+  let ready = it => enough(it) && !missing(it)
+
+  return method.length <= 1 ? method : transform([])
+
+ /**
+  * Generated method through currying, allowing chainibility.
+  *
   * @function transform
   *
-  * @see combine
-  * @this
+  * @param {Array} parameters - Array of arguments.
   *
-  * @param {Array} params - arguments array
-  *
-  * @return {Object} piped output from source curry method
+  * @returns {(Function|Object)} Intercepted output piped from source curry method.
   */
-  function transform (params) {
-    let context
+  function transform (parameters) {
+    var inputs
+    var context
 
-    return function (...input) {
-      let args = combine(params, array(arguments))
+    let results = () => method.apply(context, inputs)
+    let update = it => context || it
+    let fetch = it => !ready(it) ? transform(it) : results()
 
-      context = context || this
+    return callback
 
-      if (args.length < method.length || args.some((it) => it === undefined)) {
-        return transform(args)
-      } else {
-        return method.apply(context, args)
-      }
+    /**
+     * Interception layer to revert back to transform if data is missing.
+     *
+     * @function callback
+     *
+     * @param {...Array} input - All of the variables to be accepted by method.
+     *
+     * @returns {Object} Output of the source curry method.
+     **/
+    function callback (...input) {
+      var response
+
+      inputs = combine(parameters, array(arguments))
+      context = update(this)
+      response = fetch(inputs)
+
+      return response
     }
   }
-  return method.length <= 1 ? method : transform([])
 }
-
-export {curry as default}

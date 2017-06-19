@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Plato - src\exists.js</title>
+  <title>Plato - src/exists.js</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
@@ -12,12 +12,12 @@
   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
   <![endif]-->
 
-  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
-  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
-  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
-  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
-  <link href="../../assets/css/plato.css" rel="stylesheet">
-  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet" type="text/css">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet" type="text/css">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet" type="text/css">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet" type="text/css">
+  <link href="../../assets/css/plato.css" rel="stylesheet" type="text/css">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet" type="text/css">
 
 </head>
 
@@ -30,13 +30,16 @@
       <li>
         <a href="../../index.html">Report Home</a>
       </li>
+      <li class="active">
+        <a href="display.html">Summary Display</a>
+      </li>
     </ul>
   </div>
 </div>
 
 <div class="jumbotron">
   <div class="container">
-    <h1>src\exists.js</h1>
+    <h1>src/exists.js</h1>
   </div>
 </div>
 
@@ -48,7 +51,7 @@
     </div>
     <div class="col-md-6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h2>
-      <p class="stat">13</p>
+      <p class="stat">15</p>
     </div>
   </div>
   <div class="row historical">
@@ -90,18 +93,20 @@
 <div class="container">
   <div class="row">
     <textarea id="file-source" class="col-md-12">/**
- * Checks to see if an item exists (isn&#039;t null or undefined)
+ * Checks to see if an item exists.
+ *
  * @function exists
  *
- * @param {Object} it - the item in question of existance
+ * @param {Object} it - The item in question of existance.
  *
- * @return {boolean}
+ * @returns {boolean} True, unless it is null or undefined.
  */
 function exists (it) {
   return it !== undefined &amp;&amp; it !== null
 }
 
-export {exists as default}</textarea>
+export {exists as default}
+</textarea>
   </div>
 </div>
 
@@ -113,10 +118,10 @@ export {exists as default}</textarea>
 
 <script type="text/html" id="complexity-popover-template">
   <div class="complexity-notice">
-    Complexity : {{ cyclomatic }} <br>
-    Length : {{ halstead.length }} <br>
-    Difficulty : {{ halstead.difficulty.toFixed(2) }} <br>
-    Est # bugs : {{ halstead.bugs.toFixed(2) }}<br>
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
   </div>
 </script>
 

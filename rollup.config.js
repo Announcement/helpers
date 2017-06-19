@@ -14,18 +14,17 @@ const babelConfig = {
     [
       'env',
       {
-        modules: false
+        modules: false,
+        targets: {
+          node: 'current'
+        }
       }
     ]
   ],
   plugins: ['external-helpers']
 }
 
-const plugins = [
-  sourcemaps(),
-  json(),
-  babel(babelConfig)
-]
+const plugins = [sourcemaps(), json(), babel(babelConfig)]
 
 export default {
   entry,

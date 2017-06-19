@@ -1,13 +1,15 @@
-/** module helpers */
-import * as is from './is'
-import * as as from './as'
+import * as $is from './is'
+import * as $as from './as'
+import * as $query from './query'
 
-// let helpers = {is, as}
-const are = is
-export {is, are, as}
-  // clone,
-  // combine,
-  // has,
-  // inject,
-  // negated,
-  // prepare
+exports.are = $is
+exports.as = $as
+exports.is = $is
+exports.query = $query
+
+// clone,
+// combine,
+// has,
+// inject,
+// negated,
+// prepare

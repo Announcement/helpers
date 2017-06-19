@@ -1,18 +1,17 @@
 import curry from './curry'
 
 /**
- * Curried shortcut to hasOwnProperty
+ * Curried shortcut to hasOwnProperty.
  *
  * @function has
  *
- * @param {Object} object - collection containing property
- * @param {String} property - property name to be checked
+ * @param {Object} object - Collection containing property.
+ * @param {String} property - Property name to be checked.
  *
- * @return {boolean}
+ * @returns {boolean} False, unless the object contains the property.
  */
-
 let has = curry((object, property) => {
   return object.hasOwnProperty(property)
 })
 
-export {has as default}
+export { has as default }

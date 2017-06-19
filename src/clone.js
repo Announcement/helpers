@@ -1,15 +1,12 @@
-
 /**
- * Clones an object
+ * Clones an object.
  *
  * @function clone
  *
- * @param {Object} object - object to be cloned
+ * @param {Object} object - The object to be cloned.
  *
- * @return {Object}
+ * @returns {Object} The clone of the object.
  */
-function clone (object) {
+export default function (object) {
   return Object.assign({}, object)
 }
-
-export {clone as default}

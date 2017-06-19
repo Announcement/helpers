@@ -1,11 +1,11 @@
 /**
- * Returns a modified version of a function with negated boolean output
+ * Returns a modified version of a function with negated boolean output.
  *
  * @function negated
  *
- * @param {Function} it - method to be negated
+ * @param {Function} it - Method to be negated.
  *
- * @return {Function}
+ * @returns {Function} Function with inverse output.
  */
 function negated (it) {
   return function () {
@@ -13,4 +13,4 @@ function negated (it) {
   }
 }
 
-export {negated as default}
+export default negated

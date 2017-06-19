@@ -12,14 +12,14 @@
   <![endif]-->
 
   <script>
-    var __options = {"flags":{"complexity":{"commonjs":true,"logicalor":true,"switchcase":true,"forin":false,"trycatch":false,"newmi":true},"jshint":{}}}
+    var __options = {"flags":{"complexity":{"ecmaFeatures":{"arrowFunctions":true,"blockBindings":true,"destructuring":true,"regexYFlag":true,"regexUFlag":true,"templateStrings":true,"binaryLiterals":true,"octalLiterals":true,"unicodeCodePointEscapes":true,"defaultParams":true,"restParams":true,"forOf":true,"objectLiteralComputedProperties":true,"objectLiteralShorthandMethods":true,"objectLiteralShorthandProperties":true,"objectLiteralDuplicateProperties":true,"generators":true,"spread":true,"classes":true,"modules":true,"jsx":true,"globalReturn":true,"experimentalObjectRestSpread":true},"sourceType":"module","ecmaVersion":6,"loc":true,"newmi":true,"range":true},"eslint":{"rules":{"max-len":[2,{"code":80,"ignoreComments":true}],"max-nested-callbacks":[2,{"max":3}],"consistent-return":2,"global-require":2,"vars-on-top":1,"complexity":[1,{"max":2}],"max-depth":[1,{"max":3}],"max-params":[1,{"max":3}],"jsdoc/check-param-names":1,"jsdoc/check-tag-names":1,"jsdoc/check-types":1,"jsdoc/newline-after-description":1,"jsdoc/require-description-complete-sentence":1,"jsdoc/require-example":0,"jsdoc/require-hyphen-before-param-description":1,"jsdoc/require-param":0,"jsdoc/require-param-description":1,"jsdoc/require-param-type":1,"jsdoc/require-returns-description":1,"jsdoc/require-returns-type":1},"env":{"browser":true,"node":true,"es6":true,"mocha":true},"globals":["__dirname","module","exports","process","require"],"parserOptions":{"sourceType":"module","ecmaFeatures":{"jsx":true,"experimentalObjectRestSpread":true,"modules":true}},"extends":["standard"],"plugins":["standard","promise","jsdoc"],"settings":{"jsdoc":{"tagNamePreference":{}}}}}}
   </script>
 
-  <link href="assets/css/vendor/bootstrap.css" rel="stylesheet">
-  <link href="assets/css/vendor/font-awesome.css" rel="stylesheet">
-  <link href="assets/css/vendor/morris.css" rel="stylesheet">
-  <link href="assets/css/plato.css" rel="stylesheet">
-  <link href="assets/css/plato-display.css" rel="stylesheet">
+  <link href="./assets/css/vendor/bootstrap.css" rel="stylesheet" type="text/css">
+  <link href="./assets/css/vendor/font-awesome.css" rel="stylesheet" type="text/css">
+  <link href="./assets/css/vendor/morris.css" rel="stylesheet" type="text/css">
+  <link href="./assets/css/plato.css" rel="stylesheet" type="text/css">
+  <link href="./assets/css/plato-display.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
@@ -31,7 +31,7 @@
             <div class="reportBlock lineCount">
                 <div class="reportContent">
                     <small class="chart-label">Total / Average Lines</small>
-                    <h1>541 / 27</h1>
+                    <h1>807 / 30</h1>
                 </div>
                 <div id="chart_historical_sloc" class="chart js-chart"></div>
             </div>
@@ -40,7 +40,7 @@
             <div class="reportBlock maintainability">
                 <div class="reportContent">
                     <small class="chart-label">Average Maintainability</small>
-                    <h1>83.08</h1>
+                    <h1>84.08</h1>
                 </div>
                 <div id="chart_historical_maint" class="chart js-chart"></div>
             </div>
@@ -52,32 +52,32 @@
             <div class="reportBlock maintainabilityList">
                 <h2 class="reportTitle">Worst Maintainability Scores</h2>
                 <ul class="list-unstyled">
-
-                    <li>
-                        <strong>60 score</strong>
-                        <small>src\crawler.js</small>
-                    </li>
-
-                    <li>
-                        <strong>66 score</strong>
-                        <small>src\as.js</small>
-                    </li>
-
-                    <li>
-                        <strong>67 score</strong>
-                        <small>src\attempt.js</small>
-                    </li>
-
+                  
                     <li>
                         <strong>68 score</strong>
-                        <small>src\prepare.js</small>
+                        <small>src/prepare.js</small>
                     </li>
-
+                    
                     <li>
                         <strong>69 score</strong>
-                        <small>src\combine.js</small>
+                        <small>src/combine.js</small>
                     </li>
-
+                    
+                    <li>
+                        <strong>71 score</strong>
+                        <small>src/similar.js</small>
+                    </li>
+                    
+                    <li>
+                        <strong>73 score</strong>
+                        <small>src/helpers.js</small>
+                    </li>
+                    
+                    <li>
+                        <strong>75 score</strong>
+                        <small>src/select.js</small>
+                    </li>
+                    
                 </ul>
             </div>
         </div>
@@ -85,66 +85,32 @@
             <div class="reportBlock locList">
                 <h2 class="reportTitle">Largest Files</h2>
                 <ul class="list-unstyled">
-
+                    
                     <li>
-                        <strong>60 lines</strong>
-                        <small>src\crawler.js</small>
+                        <strong>130 lines</strong>
+                        <small>src/select.js</small>
                     </li>
-
+                    
                     <li>
-                        <strong>53 lines</strong>
-                        <small>src\Compare.js</small>
+                        <strong>64 lines</strong>
+                        <small>src/curry.js</small>
                     </li>
-
+                    
                     <li>
-                        <strong>43 lines</strong>
-                        <small>src\curry.js</small>
+                        <strong>61 lines</strong>
+                        <small>src/equals.js</small>
                     </li>
-
+                    
                     <li>
-                        <strong>40 lines</strong>
-                        <small>src\equals.js</small>
+                        <strong>51 lines</strong>
+                        <small>src/inject.js</small>
                     </li>
-
+                    
                     <li>
-                        <strong>33 lines</strong>
-                        <small>src\inject.js</small>
+                        <strong>39 lines</strong>
+                        <small>src/reduce.js</small>
                     </li>
-
-                </ul>
-            </div>
-        </div>
-        
-        <div class="col-md-4">
-            <div class="reportBlock lintList">
-                <h2 class="reportTitle">Lint Warnings</h2>
-                <ul class="list-unstyled">
-
-                    <li>
-                        <strong>38 lint errors</strong>
-                        <small>src\crawler.js</small>
-                   </li>
-
-                    <li>
-                        <strong>15 lint errors</strong>
-                        <small>src\Compare.js</small>
-                   </li>
-
-                    <li>
-                        <strong>10 lint errors</strong>
-                        <small>src\curry.js</small>
-                   </li>
-
-                    <li>
-                        <strong>10 lint errors</strong>
-                        <small>src\prepare.js</small>
-                   </li>
-
-                    <li>
-                        <strong>9 lint errors</strong>
-                        <small>src\attempt.js</small>
-                   </li>
-
+                    
                 </ul>
             </div>
         </div>

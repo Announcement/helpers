@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Plato - src\crawler.js</title>
+  <title>Plato - src/crawler.js</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
@@ -12,12 +12,12 @@
   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
   <![endif]-->
 
-  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
-  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
-  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
-  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
-  <link href="../../assets/css/plato.css" rel="stylesheet">
-  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet" type="text/css">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet" type="text/css">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet" type="text/css">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet" type="text/css">
+  <link href="../../assets/css/plato.css" rel="stylesheet" type="text/css">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet" type="text/css">
 
 </head>
 
@@ -30,13 +30,16 @@
       <li>
         <a href="../../index.html">Report Home</a>
       </li>
+      <li class="active">
+        <a href="display.html">Summary Display</a>
+      </li>
     </ul>
   </div>
 </div>
 
 <div class="jumbotron">
   <div class="container">
-    <h1>src\crawler.js</h1>
+    <h1>src/crawler.js</h1>
   </div>
 </div>
 
@@ -44,11 +47,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"  data-container="body"></i></a></h2>
-      <p class="stat">59.79</p>
+      <p class="stat">74.45</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h2>
-      <p class="stat">60</p>
+      <p class="stat">93</p>
     </div>
   </div>
   <div class="row historical">
@@ -62,11 +65,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty" data-container="body"></i></a></h2>
-      <p class="stat">38.08</p>
+      <p class="stat">43.21</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs" data-container="body"></i></a></h2>
-      <p class="stat">0.38</p>
+      <p class="stat">0.64</p>
     </div>
   </div>
 </div>
@@ -89,66 +92,99 @@
 
 <div class="container">
   <div class="row">
-    <textarea id="file-source" class="col-md-12">class Crawler {
-  constructor (method) {
-    this.method = method
+    <textarea id="file-source" class="col-md-12">// import exists from &#039;./exists&#039;
+import first from &#039;./first&#039;
+// import {forEach} from &#039;./loop&#039;
+let isArray = it =&gt; it.constructor === Array
+let isObject = it =&gt; it.constructor === Object
+
+let map = (it, callback) =&gt; {
+  const object = Object.assign({}, it)
+
+  for (let [ key, value ] of object) {
+    object[key] = { input: value, output: callback(value, key, it) }
   }
 
-  consume (it) {
-    let object = it.value || it
-    let name = it.name
-    var index
-    if (object.constructor === Array) {
-      for (index = 0; index &lt; object.length; index++) {
-        let item = object[index]
-        let response = this.consume({name: index, value: item})
+  return object
+}
 
-        object[index] = response
-      }
+function decompose (processors, input) {
+  let each = it =&gt; it.test(input)
+  let item = first(processors, each)
 
-      return this.method({name, value: object})
+  console.log(item)
+
+  return !item ? input : item.input.unit(input)
+}
+
+class Crawler {
+  constructor (method) {
+    this.method = method
+    this.cache = []
+  }
+
+  unique (value) {
+    let cache = this.cache
+
+    if (cache.indexOf(value) !== -1) {
+      return false
     }
 
-    if (object.constructor === Object) {
-      let keys = Object.keys(object)
+    cache.push(value)
+    return true
+  }
 
-      for (index = 0; index &lt; keys.length; index++) {
-        let key = keys[index]
-        let value = object[key]
-        let response = this.consume({name: key, value: value})
-
-        object[key] = response
-      }
-
-      return this.method({name, value: object})
+  flat (it, callback) {
+    // const unique = this.unique.bind(this)
+    let render = (value, key, object) =&gt; {
+      let response = callback(value, key, object)
+      console.log(response)
+      return response
+      // results.push(result)?
     }
 
-    return this.method({name, value: object})
+    let genericProcessor = it =&gt; {
+      let result = map(it)(render)
+      console.log(&#039;render processor&#039;, result)
+      return result
+    }
+
+    let processors = [
+      { name: &#039;array&#039;, test: isArray, unit: genericProcessor },
+      { name: &#039;object&#039;, test: isObject, unit: genericProcessor }
+    ]
+
+    let response = decompose(processors, it)
+    return response
+  }
+
+  process (object, callback) {
+    let genericProcessor = it =&gt; {
+      return this.flat(it, this.process.bind(this))
+    }
+
+    let processors = [
+      { name: &#039;array&#039;, test: isArray, unit: genericProcessor },
+      { name: &#039;object&#039;, test: isObject, unit: genericProcessor }
+    ]
+
+    let response = decompose(processors, object)
+
+    console.log(response)
+
+    return response
+  }
+
+  descend (it) {
+    const method = this.method
+    const process = this.process.bind(this)
+
+    process(it, method)
   }
 }
 
-// let merge = (a, b) =&gt; {
-//   Object.keys(b).forEach(key =&gt; {
-//
-//   })
-// }
-
-// n&gt; (
-//   f = (a, b) =&gt; {
-//     Object
-//       .keys(b)
-//       .forEach(c =&gt;
-//         a[c] = (typeof b[c] === &#039;object&#039;) ? f(b[c]) : b[c]
-//       )
-//       return a}({a:42}, {b: 33}))
-
-let a = {b: &#039;c&#039;}
-let b = {b: &#039;d&#039;}
-
-let dbg = it =&gt; { console.log(a[it.name], b[it.name]); return it }
-let crawler = new Crawler(dbg)
-
-console.log(crawler.consume(a))</textarea>
+export { Crawler as default }
+</textarea>
   </div>
 </div>
 
@@ -160,10 +196,10 @@ console.log(crawler.consume(a))</textarea>
 
 <script type="text/html" id="complexity-popover-template">
   <div class="complexity-notice">
-    Complexity : {{ cyclomatic }} <br>
-    Length : {{ halstead.length }} <br>
-    Difficulty : {{ halstead.difficulty.toFixed(2) }} <br>
-    Est # bugs : {{ halstead.bugs.toFixed(2) }}<br>
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
   </div>
 </script>
 

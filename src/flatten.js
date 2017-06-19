@@ -1,19 +1,20 @@
+import $array from './array'
+
 /**
- * Recursively brings arrays to the highest level
+ * Recursively brings all arguments of arrays to the highest level.
  *
  * @function flatten
  *
- * @param {Array.<Array>} array - container of the set
- *
- * @return Array
+ * @returns {Array} - Flattened array from the given arguments.
  */
-function flatten (array) {
+function flatten () {
+  let array = $array(arguments)
   let isArray
   let toArray
   let fromArray
 
-  isArray = (it) => it.constructor === Array
-  toArray = (it) => isArray(it) ? it : [it]
+  isArray = it => it.constructor === Array
+  toArray = it => isArray(it) ? it : [ it ]
   fromArray = (a, b) => a.concat(b)
 
   while (array.some(isArray)) {
@@ -23,4 +24,4 @@ function flatten (array) {
   return array
 }
 
-export {flatten as default}
+export { flatten as default }

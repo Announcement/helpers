@@ -1,15 +1,15 @@
 /**
  * Appends values to an Array,
- * but first replaces undefined values before adding to the end
+ * but first replaces undefined values before adding to the end.
  *
  * @function combine
  *
- * @param {Array} array - list of existing items
- * @param {Array} values - proposed additions to the lsit
+ * @param {Array} array - List of existing items.
+ * @param {Array} values - Proposed additions to the list.
  *
- * @return {Array} - collective array
+ * @returns {Array} - Collective array.
  */
-function combine (array, values) {
+export default function (array, values) {
   let index
 
   array = array.concat([])
@@ -20,5 +20,3 @@ function combine (array, values) {
 
   return array.concat(values)
 }
-
-export {combine as default}

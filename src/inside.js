@@ -1,11 +1,12 @@
 /**
  * Detects if the needle is in the haystack.
+ *
  * @function inside
  *
- * @param {Object|Array} haystack - what we are looking in
- * @param {Object} needle - strict equal comparison compatible
+ * @param {Object|Array} haystack - What we are looking in.
+ * @param {Object} needle - Strict equal comparison compatible.
  *
- * @return {Boolean} Whether or not the value could be located
+ * @returns {boolean} Whether or not the value could be located.
  */
 function inside (haystack, needle) {
   let toValues = object => key => object[key]
@@ -18,11 +19,12 @@ function inside (haystack, needle) {
   let insideArray = () => haystack.some(areInside)
   let insideObject = () => values(haystack).some(areInside)
 
-  return haystack === needle ||
-    isArray(haystack) && insideArray(haystack, needle) ||
-    isObject(haystack) && insideObject(haystack, needle)
+  let array = () => isArray(haystack) && insideArray(haystack, needle)
+  let object = () => isObject(haystack) && insideObject(haystack, needle)
+  let matches = () => haystack === needle
+  let search = () => array() || object()
+
+  return matches() || search()
 }
 
-// exports.inside = inside
-
-export {inside as default}
+export { inside as default }

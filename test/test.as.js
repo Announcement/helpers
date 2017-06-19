@@ -1,40 +1,44 @@
-import * as as from '../src/as.js'
+import * as unit from '../src/as'
 import {expect} from 'chai'
 
-describe('as', function () {
-  context('array', function () {
+describe('As', function () {
+  it('should be an object', () => {
+    expect(unit).to.be.an('object')
+  })
+
+  context('#array', function () {
     it('should be an existant property', function () {
-      expect(as.array).to.exist
+      expect(unit.array).to.exist
     })
   })
 
-  context('pair', function () {
+  context('#pair', function () {
     it('should be an existant property', function () {
-      expect(as.pair).to.exist
+      expect(unit.pair).to.exist
     })
   })
 
-  context('method', function () {
+  context('#method', function () {
     it('should be an existant property', function () {
-      expect(as.method).to.exist
+      expect(unit.method).to.exist
     })
   })
 
-  context('flatten', function () {
+  context('#flatten', function () {
     it('should be an existant property', function () {
-      expect(as.flatten).to.exist
+      expect(unit.flatten).to.exist
     })
   })
 
-  context('decomposed', function () {
+  context('#decomposed', function () {
     it('should be an existant property', function () {
-      expect(as.decomposed).to.exist
+      expect(unit.decomposed).to.exist
     })
   })
 
-  context('attempt', function () {
+  context('#attempt', function () {
     it('should be an existant property', function () {
-      expect(as.attempt).to.exist
+      expect(unit.attempt).to.exist
     })
   })
 })
