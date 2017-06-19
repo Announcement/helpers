@@ -9,20 +9,12 @@ function reducer (previous, current) {
   array = arguments[3]
   self = this
 
-  var nothing = function nothing (it) {
-    return it
-  }
-  var isStarting = function isStarting (it) {
-    return index === 0
-  }
-  var isStopping = function isStopping (it) {
-    return array.length - index === 1
-  }
-  var checkArray = function checkArray (it) {
-    return it instanceof Array
-  }
+  let nothing = it => it
+  let isStarting = it => index === 0
+  let isStopping = it => array.length - index === 1
+  let checkArray = it => it instanceof Array
 
-  var normalize = function normalize (it) {
+  let normalize = it => {
     var result
 
     result = true

@@ -1,16 +1,20 @@
 'use strict'
 
-var _typeof = typeof Symbol === 'function' && typeof Symbol.iterator === 'symbol' ? function (obj) { return typeof obj } : function (obj) { return obj && typeof Symbol === 'function' && obj.constructor === Symbol && obj !== Symbol.prototype ? 'symbol' : typeof obj }
+/**
+ * Dismantles unnecissary lists.
+ *
+ * @function single
+ *
+ * @param {Array} list - List of items.
+ *
+ * @returns {Array|Object} The only item or entire list.
+ */
 
 function single (list) {
   var result
 
-  var isArray = function isArray (it) {
-    return (typeof it === 'undefined' ? 'undefined' : _typeof(it)) === 'object' && it instanceof Array
-  }
-  var alone = function alone (it) {
-    return isArray(it) && it.length === 1
-  }
+  let isArray = it => typeof it === 'object' && it instanceof Array
+  let alone = it => isArray(it) && it.length === 1
 
   result = alone(list) ? list.shift() : list
 

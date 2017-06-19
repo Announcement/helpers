@@ -1,24 +1,35 @@
 'use strict'
 
-var $array = function $array (it) {
+/**
+ * Lazy way of turning an item into an Array.
+ *
+ * @function array
+ *
+ * @param {Object} it - Array like object.
+ *
+ * @returns {Array} Implicit array object.
+ */
+
+var $array = function (it) {
   return Array.prototype.slice.call(it, 0)
 }
 
+/**
+ * Recursively brings all arguments of arrays to the highest level.
+ *
+ * @function flatten
+ *
+ * @returns {Array} - Flattened array from the given arguments.
+ */
 function flatten () {
-  var array = $array(arguments)
-  var isArray = void 0
-  var toArray = void 0
-  var fromArray = void 0
+  let array = $array(arguments)
+  let isArray
+  let toArray
+  let fromArray
 
-  isArray = function isArray (it) {
-    return it.constructor === Array
-  }
-  toArray = function toArray (it) {
-    return isArray(it) ? it : [it]
-  }
-  fromArray = function fromArray (a, b) {
-    return a.concat(b)
-  }
+  isArray = it => it.constructor === Array
+  toArray = it => isArray(it) ? it : [it]
+  fromArray = (a, b) => a.concat(b)
 
   while (array.some(isArray)) {
     array = array.map(toArray).reduce(fromArray)

@@ -1,7 +1,19 @@
 'use strict'
 
-var combine = function combine (array, values) {
-  var index = void 0
+/**
+ * Appends values to an Array,
+ * but first replaces undefined values before adding to the end.
+ *
+ * @function combine
+ *
+ * @param {Array} array - List of existing items.
+ * @param {Array} values - Proposed additions to the list.
+ *
+ * @returns {Array} - Collective array.
+ */
+
+var combine = function (array, values) {
+  let index
 
   array = array.concat([])
 

@@ -1,13 +1,22 @@
 'use strict'
 
-var _typeof = typeof Symbol === 'function' && typeof Symbol.iterator === 'symbol' ? function (obj) { return typeof obj } : function (obj) { return obj && typeof Symbol === 'function' && obj.constructor === Symbol && obj !== Symbol.prototype ? 'symbol' : typeof obj }
+/**
+ * Check if they're similar in origin (type & constructor).
+ *
+ * @function similar
+ *
+ * @param {Object} reference - For comparison reference.
+ * @param {Object} object - To be compared.
+ *
+ * @returns {boolean} True if they have the same type and constructor.
+ */
 
 function similar (reference, object) {
-  var typesMatch = void 0
-  var constructorsMatch = void 0
+  let typesMatch
+  let constructorsMatch
 
   constructorsMatch = reference.constructor === object.constructor
-  typesMatch = (typeof reference === 'undefined' ? 'undefined' : _typeof(reference)) === (typeof object === 'undefined' ? 'undefined' : _typeof(object))
+  typesMatch = typeof reference === typeof object
 
   return typesMatch && constructorsMatch
 }

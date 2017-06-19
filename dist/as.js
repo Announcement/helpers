@@ -1,10 +1,17 @@
 'use strict'
 
-var _typeof = typeof Symbol === 'function' && typeof Symbol.iterator === 'symbol' ? function (obj) { return typeof obj } : function (obj) { return obj && typeof Symbol === 'function' && obj.constructor === Symbol && obj !== Symbol.prototype ? 'symbol' : typeof obj }
-
 Object.defineProperty(exports, '__esModule', { value: true })
 
-var array = function array (it) {
+/**
+ * Lazy way of turning an item into an Array.
+ *
+ * @function array
+ *
+ * @param {Object} it - Array like object.
+ *
+ * @returns {Array} Implicit array object.
+ */
+var array = function (it) {
   return Array.prototype.slice.call(it, 0)
 }
 
@@ -12,15 +19,24 @@ var array$1 = Object.freeze({
   default: array
 })
 
+/**
+ * Pairs an object into a set of {key, value} arrays.
+ *
+ * @function pair
+ *
+ * @param {Object} object - Collection to be paired.
+ *
+ * @returns {Array.<{key: string, value}>} An array of the original object key-value pairs.
+ */
 function pair (object) {
   return Object.keys(object).map(map)
 
   function map (key) {
-    var value = object[key]
+    let value = object[key]
 
     return {
-      key: key,
-      value: value
+      key,
+      value
     }
   }
 }
@@ -29,8 +45,19 @@ var pair$1 = Object.freeze({
   default: pair
 })
 
-var combine = function combine (array, values) {
-  var index = void 0
+/**
+ * Appends values to an Array,
+ * but first replaces undefined values before adding to the end.
+ *
+ * @function combine
+ *
+ * @param {Array} array - List of existing items.
+ * @param {Array} values - Proposed additions to the list.
+ *
+ * @returns {Array} - Collective array.
+ */
+var combine = function (array, values) {
+  let index
 
   array = array.concat([])
 
@@ -41,44 +68,68 @@ var combine = function combine (array, values) {
   return array.concat(values)
 }
 
-var empty = function empty (it) {
+/**
+ * Check to see if an item is null or undefined.
+ *
+ * @function empty
+ *
+ * @param {Object} it - The item in question of existance.
+ *
+ * @returns {boolean} False, unless it is null or undefiend.
+ */
+var empty = function (it) {
   return it === undefined || it === null
 }
 
-var curry = function curry (method) {
-  var enough = function enough (input) {
-    return input.length >= method.length
-  }
-  var missing = function missing (input) {
-    return input.some(empty)
-  }
-  var ready = function ready (it) {
-    return enough(it) && !missing(it)
-  }
+/**
+ * Returns a modified function with lazy option assocations.
+ *
+ * @function curry
+ *
+ * @see combine
+ * @see array
+ * @see empty
+ *
+ * @param {Function} method - Function to be curried.
+ *
+ * @returns {Function} Curried functions.
+ */
+var curry = function (method) {
+  let enough = input => input.length >= method.length
+  let missing = input => input.some(empty)
+  let ready = it => enough(it) && !missing(it)
 
-  return method.length <= 1 ? method : transform([])
+  return method.length <= 1 ? method : transform([]
 
-  function transform (parameters) {
+  /**
+   * Generated method through currying, allowing chainibility.
+   *
+   * @function transform
+   *
+   * @param {Array} parameters - Array of arguments.
+   *
+   * @returns {(Function|Object)} Intercepted output piped from source curry method.
+   */
+  ); function transform (parameters) {
     var inputs
     var context
 
-    var results = function results () {
-      return method.apply(context, inputs)
-    }
-    var update = function update (it) {
-      return context || it
-    }
-    var fetch = function fetch (it) {
-      return !ready(it) ? transform(it) : results()
-    }
+    let results = () => method.apply(context, inputs)
+    let update = it => context || it
+    let fetch = it => !ready(it) ? transform(it) : results()
 
     return callback
 
-    function callback () {
-      for (var _len = arguments.length, input = Array(_len), _key = 0; _key < _len; _key++) {
-        input[_key] = arguments[_key]
-      }
-
+    /**
+     * Interception layer to revert back to transform if data is missing.
+     *
+     * @function callback
+     *
+     * @param {...Array} input - All of the variables to be accepted by method.
+     *
+     * @returns {Object} Output of the source curry method.
+     **/
+    function callback (...input) {
       var response
 
       inputs = combine(parameters, array(arguments))
@@ -94,21 +145,22 @@ var curry$1 = Object.freeze({
   default: curry
 })
 
+/**
+ * Recursively brings all arguments of arrays to the highest level.
+ *
+ * @function flatten
+ *
+ * @returns {Array} - Flattened array from the given arguments.
+ */
 function flatten () {
-  var array$$1 = array(arguments)
-  var isArray = void 0
-  var toArray = void 0
-  var fromArray = void 0
+  let array$$1 = array(arguments)
+  let isArray
+  let toArray
+  let fromArray
 
-  isArray = function isArray (it) {
-    return it.constructor === Array
-  }
-  toArray = function toArray (it) {
-    return isArray(it) ? it : [it]
-  }
-  fromArray = function fromArray (a, b) {
-    return a.concat(b)
-  }
+  isArray = it => it.constructor === Array
+  toArray = it => isArray(it) ? it : [it]
+  fromArray = (a, b) => a.concat(b)
 
   while (array$$1.some(isArray)) {
     array$$1 = array$$1.map(toArray).reduce(fromArray)
@@ -121,37 +173,59 @@ var flatten$1 = Object.freeze({
   default: flatten
 })
 
+/**
+ * Dismantles unnecissary lists.
+ *
+ * @function single
+ *
+ * @param {Array} list - List of items.
+ *
+ * @returns {Array|Object} The only item or entire list.
+ */
 function single (list) {
   var result
 
-  var isArray = function isArray (it) {
-    return (typeof it === 'undefined' ? 'undefined' : _typeof(it)) === 'object' && it instanceof Array
-  }
-  var alone = function alone (it) {
-    return isArray(it) && it.length === 1
-  }
+  let isArray = it => typeof it === 'object' && it instanceof Array
+  let alone = it => isArray(it) && it.length === 1
 
   result = alone(list) ? list.shift() : list
 
   return result
 }
 
+/**
+ * Checks to see if an item exists.
+ *
+ * @function exists
+ *
+ * @param {Object} it - The item in question of existance.
+ *
+ * @returns {boolean} True, unless it is null or undefined.
+ */
 function exists (it) {
   return it !== undefined && it !== null
 }
 
-var attempt = function attempt (mutation, subject) {
-  var _this = this
-
+/**
+ * Attempts to apply mutation to subject.
+ *
+ * @function attempt
+ *
+ * @see array
+ * @see single
+ * @see exists
+ *
+ * @param {Function} mutation - Mutator function to be called on the subject.
+ * @param {Object} subject - Any input that should be mutated.
+ *
+ * @returns {Object} Subject unless mutation can be applied.
+ */
+var attempt = function (mutation, subject) {
   var parameters
   var result
 
-  var apply = function apply (method, parameters) {
-    return method.apply(_this, parameters)
-  }
-  var valid = function valid (it) {
-    return exists(it) && single(it)
-  }
+  let apply = (method, parameters) => method.apply(this, parameters)
+  let valid = it => exists(it) && single(it)
 
   parameters = array(arguments).slice(1)
   result = apply(mutation, parameters)
@@ -163,13 +237,23 @@ var attempt$1 = Object.freeze({
   default: attempt
 })
 
-var decompose = function decompose (array, initial) {
-  var composer = function composer (previous, current) {
-    return attempt(current, previous)
-  }
-  var reducer = function reducer (it) {
-    return array.reduce(composer, initial || it)
-  }
+/**
+ * Applies functions to a value and moves down the chain if possible.
+ *
+ * @function decompose
+ *
+ * @see exists
+ * @see attempt
+ * @see array
+ *
+ * @param {Array} array - List of functions to be applied.
+ * @param {Object} initial - Optional initial item.
+ *
+ * @returns {Object} Mutated version of the initial value.
+ */
+var decompose = function (array, initial) {
+  let composer = (previous, current) => attempt(current, previous)
+  let reducer = it => array.reduce(composer, initial || it)
 
   return initial ? reducer(initial) : reducer
 }

@@ -1,42 +1,72 @@
 'use strict'
 
-var _typeof = typeof Symbol === 'function' && typeof Symbol.iterator === 'symbol' ? function (obj) { return typeof obj } : function (obj) { return obj && typeof Symbol === 'function' && obj.constructor === Symbol && obj !== Symbol.prototype ? 'symbol' : typeof obj }
+/**
+ * Lazy way of turning an item into an Array.
+ *
+ * @function array
+ *
+ * @param {Object} it - Array like object.
+ *
+ * @returns {Array} Implicit array object.
+ */
 
-var array = function array (it) {
+var array = function (it) {
   return Array.prototype.slice.call(it, 0)
 }
 
+/**
+ * Dismantles unnecissary lists.
+ *
+ * @function single
+ *
+ * @param {Array} list - List of items.
+ *
+ * @returns {Array|Object} The only item or entire list.
+ */
 function single (list) {
   var result
 
-  var isArray = function isArray (it) {
-    return (typeof it === 'undefined' ? 'undefined' : _typeof(it)) === 'object' && it instanceof Array
-  }
-  var alone = function alone (it) {
-    return isArray(it) && it.length === 1
-  }
+  let isArray = it => typeof it === 'object' && it instanceof Array
+  let alone = it => isArray(it) && it.length === 1
 
   result = alone(list) ? list.shift() : list
 
   return result
 }
 
+/**
+ * Checks to see if an item exists.
+ *
+ * @function exists
+ *
+ * @param {Object} it - The item in question of existance.
+ *
+ * @returns {boolean} True, unless it is null or undefined.
+ */
 function exists (it) {
   return it !== undefined && it !== null
 }
 
-var attempt = function attempt (mutation, subject) {
-  var _this = this
-
+/**
+ * Attempts to apply mutation to subject.
+ *
+ * @function attempt
+ *
+ * @see array
+ * @see single
+ * @see exists
+ *
+ * @param {Function} mutation - Mutator function to be called on the subject.
+ * @param {Object} subject - Any input that should be mutated.
+ *
+ * @returns {Object} Subject unless mutation can be applied.
+ */
+var attempt = function (mutation, subject) {
   var parameters
   var result
 
-  var apply = function apply (method, parameters) {
-    return method.apply(_this, parameters)
-  }
-  var valid = function valid (it) {
-    return exists(it) && single(it)
-  }
+  let apply = (method, parameters) => method.apply(this, parameters)
+  let valid = it => exists(it) && single(it)
 
   parameters = array(arguments).slice(1)
   result = apply(mutation, parameters)
