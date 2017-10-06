@@ -1,7 +1,12 @@
+import check from './check'
+
 /**
  * Dismantles unnecissary lists.
  *
  * @function single
+ * @version 2
+ *
+ * @see check
  *
  * @param {Array} list - List of items.
  *
@@ -10,8 +15,9 @@
 function single (list) {
   var result
 
-  let isArray = (it) => typeof it === 'object' && it instanceof Array
-  let alone = it => isArray(it) && it.length === 1
+  let isArray = it => check(it) === 'Array'
+  let isLength = it => it.length === 1
+  let alone = it => isArray(it) && isLength(it)
 
   result = alone(list) ? list.shift() : list
 

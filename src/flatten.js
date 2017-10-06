@@ -7,7 +7,7 @@ import $array from './array'
  *
  * @returns {Array} - Flattened array from the given arguments.
  */
-function flatten () {
+export default function flatten () {
   let array = $array(arguments)
   let isArray
   let toArray
@@ -23,5 +23,3 @@ function flatten () {
 
   return array
 }
-
-export { flatten as default }

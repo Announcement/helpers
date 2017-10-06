@@ -7,7 +7,7 @@
  *
  * @returns {Array.<{key: string, value}>} An array of the original object key-value pairs.
  */
-function pair (object) {
+export default function pair (object) {
   return Object
     .keys(object)
     .map(map)
@@ -21,5 +21,3 @@ function pair (object) {
     }
   }
 }
-
-export { pair as default }

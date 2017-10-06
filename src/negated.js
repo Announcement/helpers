@@ -7,10 +7,14 @@
  *
  * @returns {Function} Function with inverse output.
  */
-function negated (it) {
+export default function negated (it) {
   return function () {
-    return !it.apply(this, arguments)
+    let result
+    let inverse
+
+    result = it.apply(this, arguments)
+    inverse = !result
+
+    return inverse
   }
 }
-
-export default negated

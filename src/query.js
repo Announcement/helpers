@@ -1,6 +1,6 @@
 import where from './where'
 import select from './select'
-import unique from './unique'
+import * as unique from './unique'
 
 export {
   select,

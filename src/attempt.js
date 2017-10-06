@@ -8,8 +8,8 @@ import exists from './exists'
  * @function attempt
  *
  * @see array
- * @see single
  * @see exists
+ * @see single
  *
  * @param {Function} mutation - Mutator function to be called on the subject.
  * @param {Object} subject - Any input that should be mutated.

@@ -22,7 +22,7 @@ export default function (method) {
 
   return method.length <= 1 ? method : transform([])
 
- /**
+  /**
   * Generated method through currying, allowing chainibility.
   *
   * @function transform

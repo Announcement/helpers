@@ -2,6 +2,7 @@ import equal from './equals'
 import existent from './exists'
 import prepare from './prepare'
 import inside from './inside'
+import check from './check'
 
 const ELEMENT_NODE = 1
 const DOCUMENT_FRAGMENT_NODE = 11
@@ -17,5 +18,6 @@ export default prepare({
   existent,
   fragment,
   inside,
-  text
+  text,
+  check
 })

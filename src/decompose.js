@@ -5,9 +5,7 @@ import attempt from './attempt'
  *
  * @function decompose
  *
- * @see exists
  * @see attempt
- * @see array
  *
  * @param {Array} array - List of functions to be applied.
  * @param {Object} initial - Optional initial item.

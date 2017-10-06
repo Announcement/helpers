@@ -1,4 +1,4 @@
-import * as $is from './is'
+import $is from './is'
 import * as $as from './as'
 import * as $query from './query'
 

@@ -1,3 +1,5 @@
+import detect from './detect'
+import array from './array'
 /**
  * Check if they're similar in origin (type & constructor).
  *
@@ -8,14 +10,29 @@
  *
  * @returns {boolean} True if they have the same type and constructor.
  */
-function similar (reference, object) {
-  let typesMatch
-  let constructorsMatch
 
-  constructorsMatch = reference.constructor === object.constructor
-  typesMatch = typeof reference === typeof object
+export default function similar () {
+  let list
+  let result
 
-  return typesMatch && constructorsMatch
+  let previous
+
+  let index
+
+  list = array(arguments).map(detect)
+  previous = list.shift()
+  result = true
+
+  for (index = 0; index < list.length; index++) run(list[index])
+
+  function run (current) {
+    if (previous !== current) {
+      index = list.length
+      result = false
+    }
+
+    previous = current
+  }
+
+  return result && previous
 }
-
-export { similar as default }
