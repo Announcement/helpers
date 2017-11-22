@@ -57,3 +57,16 @@ typings/
 # dotenv environment variables file
 .env
 
+
+docs/**
+mochawesome-report/**
+working/**
+.vscode/**
+dist/**
+header/**
+report/**
+test.backup/**
+lib/**
+library/**
+info/**
+package-lock.json
