@@ -1,29 +1,29 @@
 import curry from '../src/curry'
 import {expect} from 'chai'
 
-describe('curry()', () => {
-  it('should be a function', () => {
+describe('curry()', function () {
+  it('should be a function', function () {
     expect(curry).to.be.a('function')
   })
 
-  it('should return a function', () => {
+  it('should return a function', function () {
     let f = function (x, y) { return x + y }
     expect(curry(f)).to.be.a('function')
   })
 
-  it('should be lazy if possible', () => {
+  it('should be lazy if possible', function () {
     let f = function (x) { return x }
     expect(curry(f)).to.equal(f)
   })
 
-  it('should not immediately call the function', () => {
+  it('should not immediately call the function', function () {
     let f = function () { return true }
     let g = curry(f)
 
     expect(g).to.be.a('function')
   })
 
-  it('should still be callable while waiting for parameters', () => {
+  it('should still be callable while waiting for parameters', function () {
     let f = function (x, y) { return x + y }
     let g = curry(f)
     let h = g(1)
@@ -66,7 +66,7 @@ describe('curry()', () => {
     expect(g(4)(5)).to.be.eql(9)
   })
 
-  it('should also work with arrow functions', () => {
+  it('should also work with arrow functions', function () {
     let f = (x, y) => x * y
     let g = curry(f)
 

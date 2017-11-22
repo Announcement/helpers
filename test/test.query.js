@@ -2,21 +2,21 @@ import * as query from '../src/query'
 
 import {expect} from 'chai'
 
-describe('Query', () => {
-  context('#where()', () => {
-    it('should be an existent method', () => {
+describe('Query', function () {
+  context('#where()', function () {
+    it('should be an existent method', function () {
       expect(query.where).to.be.a('function')
     })
   })
 
-  context('#select()', () => {
-    it('should be an existent method', () => {
+  context('#select()', function () {
+    it('should be an existent method', function () {
       expect(query.select).to.be.a('function')
     })
   })
 
-  context('#unique', () => {
-    it('should be an existent object', () => {
+  context('#unique', function () {
+    it('should be an existent object', function () {
       expect(query.unique).to.be.an('object')
     })
   })

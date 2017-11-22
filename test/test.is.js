@@ -17,7 +17,7 @@ describe('Is', function () {
       expect(unit.not.element).to.be.a('function')
     })
 
-    it('should check the nodeType property', () => {
+    it('should check the nodeType property', function () {
       expect(unit.element({nodeType: 1})).to.be.true
     })
   })
@@ -31,7 +31,7 @@ describe('Is', function () {
       expect(unit.not.fragment).to.be.a('function')
     })
 
-    it('should check the nodeType property', () => {
+    it('should check the nodeType property', function () {
       expect(unit.fragment({nodeType: 11})).to.be.true
     })
   })
@@ -45,7 +45,7 @@ describe('Is', function () {
       expect(unit.not.text).to.be.a('function')
     })
 
-    it('should check the nodeType property', () => {
+    it('should check the nodeType property', function () {
       expect(unit.text({nodeType: 3})).to.be.true
     })
   })

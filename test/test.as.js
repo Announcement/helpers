@@ -2,7 +2,7 @@ import * as unit from '../src/as'
 import {expect} from 'chai'
 
 describe('As', function () {
-  it('should be an object', () => {
+  it('should be an object', function () {
     expect(unit).to.be.an('object')
   })
 

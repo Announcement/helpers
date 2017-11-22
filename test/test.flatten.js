@@ -4,7 +4,7 @@ import {expect} from 'chai'
 describe('flatten()', function () {
   let array = [1, [[2]]]
 
-  it('should be a function', () => {
+  it('should be a function', function () {
     expect(flatten).to.be.a('function')
   })
 

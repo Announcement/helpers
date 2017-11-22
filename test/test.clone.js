@@ -2,7 +2,7 @@ import clone from '../src/clone.js'
 import {expect} from 'chai'
 
 describe('clone()', function () {
-  it('should be a function', () => {
+  it('should be a function', function () {
     expect(clone).to.be.a('function')
   })
 

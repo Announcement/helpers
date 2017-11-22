@@ -6,7 +6,7 @@ describe('combine()', function () {
   let longArray = ['b', 'c']
   let fragmentedArray = ['d', undefined, 'f']
 
-  it('should be a function', () => {
+  it('should be a function', function () {
     expect(combine).to.be.a('function')
   })
 

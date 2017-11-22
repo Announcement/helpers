@@ -2,7 +2,7 @@ import has from '../src/has.js'
 import {expect} from 'chai'
 
 describe('has()', function () {
-  it('should be a function', () => {
+  it('should be a function', function () {
     expect(has).to.be.a('function')
   })
 

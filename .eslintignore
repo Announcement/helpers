@@ -3,3 +3,4 @@ bin/**/*.js
 src/**/indev.*.js
 test/**/*.js
 test/mocha.opts
+mochawesome-report

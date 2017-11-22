@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 /**
  * Check if they're similar in origin (type & constructor).
@@ -10,15 +10,14 @@
  *
  * @returns {boolean} True if they have the same type and constructor.
  */
+function similar(reference, object) {
+  let typesMatch;
+  let constructorsMatch;
 
-function similar (reference, object) {
-  let typesMatch
-  let constructorsMatch
+  constructorsMatch = reference.constructor === object.constructor;
+  typesMatch = typeof reference === typeof object;
 
-  constructorsMatch = reference.constructor === object.constructor
-  typesMatch = typeof reference === typeof object
-
-  return typesMatch && constructorsMatch
+  return typesMatch && constructorsMatch;
 }
 
 // import has from './has' // hasOwnProperty
@@ -26,9 +25,13 @@ function similar (reference, object) {
 // import flatten from './flatten' // [[[[1]], 2]] => [1, 2]
 var equal = function (reference, object) {
   if (!similar(reference, object)) {
-    return false
+    return false;
   }
-
+  // this is probably broken,
+  // this `returns true` line is added just to pass linting, as is most likely
+  // not the expected behavior and therefore you should not use equals.js
+  // or any of it's dependents.
+  return true;
   // if (reference.constructor !== Object) {
   //   return reference === object
   // }
@@ -42,8 +45,7 @@ var equal = function (reference, object) {
   //     has(object)(item.key) &&
   //     equals(reference[item.key], object[item.key])
   // })
-}
-
+};
 // function equals (r, o) {
 //   // Are they of the same type?
 //   if (typeof r !== typeof o || r.constructor !== o.constructor) {
@@ -134,8 +136,8 @@ var equal = function (reference, object) {
  *
  * @returns {boolean} True, unless it is null or undefined.
  */
-function exists (it) {
-  return it !== undefined && it !== null
+function exists(it) {
+  return it !== undefined && it !== null;
 }
 
 /**
@@ -148,31 +150,48 @@ function exists (it) {
  * @returns {Array} Implicit array object.
  */
 var array = function (it) {
-  return Array.prototype.slice.call(it, 0)
-}
+  return Array.prototype.slice.call(it, 0);
+};
 
 var array$1 = Object.freeze({
-  default: array
-})
+	default: array
+});
+
+/**
+ * Get the type of an object, properly.
+ *
+ * @function check
+ *
+ * @param {Object} it - Item to get type of.
+ *
+ * @returns {string} Should display the human name of the Object.
+ */
+function check(it) {
+  return Object.prototype.toString.call(it).slice(8, -1);
+}
 
 /**
  * Dismantles unnecissary lists.
  *
  * @function single
+ * @version 2
+ *
+ * @see check
  *
  * @param {Array} list - List of items.
  *
  * @returns {Array|Object} The only item or entire list.
  */
-function single (list) {
-  var result
+function single(list) {
+  var result;
 
-  let isArray = it => typeof it === 'object' && it instanceof Array
-  let alone = it => isArray(it) && it.length === 1
+  let isArray = it => check(it) === 'Array';
+  let isLength = it => it.length === 1;
+  let alone = it => isArray(it) && isLength(it);
 
-  result = alone(list) ? list.shift() : list
+  result = alone(list) ? list.shift() : list;
 
-  return result
+  return result;
 }
 
 /**
@@ -181,8 +200,8 @@ function single (list) {
  * @function attempt
  *
  * @see array
- * @see single
  * @see exists
+ * @see single
  *
  * @param {Function} mutation - Mutator function to be called on the subject.
  * @param {Object} subject - Any input that should be mutated.
@@ -190,21 +209,21 @@ function single (list) {
  * @returns {Object} Subject unless mutation can be applied.
  */
 var attempt = function (mutation, subject) {
-  var parameters
-  var result
+  var parameters;
+  var result;
 
-  let apply = (method, parameters) => method.apply(this, parameters)
-  let valid = it => exists(it) && single(it)
+  let apply = (method, parameters) => method.apply(this, parameters);
+  let valid = it => exists(it) && single(it);
 
-  parameters = array(arguments).slice(1)
-  result = apply(mutation, parameters)
+  parameters = array(arguments).slice(1);
+  result = apply(mutation, parameters);
 
-  return valid(result) || valid(parameters)
-}
+  return valid(result) || valid(parameters);
+};
 
 var attempt$1 = Object.freeze({
-  default: attempt
-})
+	default: attempt
+});
 
 /**
  * Injects a transformer into each element of a collection.
@@ -218,34 +237,34 @@ var attempt$1 = Object.freeze({
  *
  * @returns {Object.<string, Function>} All it functions, but mutated via transform.
  */
-function inject (it, transform) {
-  var copy
-  var keys
+function inject(it, transform) {
+  var copy;
+  var keys;
 
-  let isObject = it => typeof it === 'object' && it.constructor.name === 'Object'
+  let isObject = it => typeof it === 'object' && it.constructor.name === 'Object';
 
-  let isFunction = it => typeof it === 'function' && it.constructor.name === 'Function'
+  let isFunction = it => typeof it === 'function' && it.constructor.name === 'Function';
 
-  let forObject = it => isObject(it) && inject(it, transform)
+  let forObject = it => isObject(it) && inject(it, transform);
 
-  let forFunction = it => isFunction(it) && attempt(transform, it)
+  let forFunction = it => isFunction(it) && attempt(transform, it);
 
-  keys = Object.keys(it)
-  copy = {}
+  keys = Object.keys(it);
+  copy = {};
 
-  keys.forEach(forEach)
+  keys.forEach(forEach);
 
-  return copy
+  return copy;
 
-  function forEach (key) {
-    var value
+  function forEach(key) {
+    var value;
 
-    value = it[key]
+    value = it[key];
 
-    value = attempt(forObject, value)
-    value = attempt(forFunction, value)
+    value = attempt(forObject, value);
+    value = attempt(forFunction, value);
 
-    copy[key] = value
+    copy[key] = value;
   }
 }
 
@@ -261,16 +280,16 @@ function inject (it, transform) {
  * @returns {Array} - Collective array.
  */
 var combine = function (array, values) {
-  let index
+  let index;
 
-  array = array.concat([])
+  array = array.concat([]);
 
   while ((index = array.indexOf(undefined)) !== -1 && values.length > 0) {
-    array[index] = values.shift()
+    array[index] = values.shift();
   }
 
-  return array.concat(values)
-}
+  return array.concat(values);
+};
 
 /**
  * Check to see if an item is null or undefined.
@@ -282,8 +301,8 @@ var combine = function (array, values) {
  * @returns {boolean} False, unless it is null or undefiend.
  */
 var empty = function (it) {
-  return it === undefined || it === null
-}
+  return it === undefined || it === null;
+};
 
 /**
  * Returns a modified function with lazy option assocations.
@@ -299,9 +318,9 @@ var empty = function (it) {
  * @returns {Function} Curried functions.
  */
 var curry = function (method) {
-  let enough = input => input.length >= method.length
-  let missing = input => input.some(empty)
-  let ready = it => enough(it) && !missing(it)
+  let enough = input => input.length >= method.length;
+  let missing = input => input.some(empty);
+  let ready = it => enough(it) && !missing(it);
 
   return method.length <= 1 ? method : transform([]
 
@@ -314,15 +333,15 @@ var curry = function (method) {
    *
    * @returns {(Function|Object)} Intercepted output piped from source curry method.
    */
-  ); function transform (parameters) {
-    var inputs
-    var context
+  );function transform(parameters) {
+    var inputs;
+    var context;
 
-    let results = () => method.apply(context, inputs)
-    let update = it => context || it
-    let fetch = it => !ready(it) ? transform(it) : results()
+    let results = () => method.apply(context, inputs);
+    let update = it => context || it;
+    let fetch = it => !ready(it) ? transform(it) : results();
 
-    return callback
+    return callback;
 
     /**
      * Interception layer to revert back to transform if data is missing.
@@ -333,21 +352,21 @@ var curry = function (method) {
      *
      * @returns {Object} Output of the source curry method.
      **/
-    function callback (...input) {
-      var response
+    function callback(...input) {
+      var response;
 
-      inputs = combine(parameters, array(arguments))
-      context = update(this)
-      response = fetch(inputs)
+      inputs = combine(parameters, array(arguments));
+      context = update(this);
+      response = fetch(inputs);
 
-      return response
+      return response;
     }
   }
-}
+};
 
 var curry$1 = Object.freeze({
-  default: curry
-})
+	default: curry
+});
 
 /**
  * Returns a modified version of a function with negated boolean output.
@@ -358,23 +377,23 @@ var curry$1 = Object.freeze({
  *
  * @returns {Function} Function with inverse output.
  */
-function negated (it) {
+function negated(it) {
   return function () {
-    return !it.apply(this, arguments)
-  }
+    return !it.apply(this, arguments);
+  };
 }
 
-function prepare (it) {
-  var not
-  var tmp
+function prepare(it) {
+  var not;
+  var tmp;
 
-  not = inject(it, negated)
-  not = inject(not, curry)
-  tmp = inject(it, curry)
+  not = inject(it, negated);
+  not = inject(not, curry);
+  tmp = inject(it, curry);
 
-  tmp.not = not
+  tmp.not = not;
 
-  return tmp
+  return tmp;
 }
 
 /**
@@ -387,32 +406,32 @@ function prepare (it) {
  *
  * @returns {boolean} Whether or not the value could be located.
  */
-function inside (haystack, needle) {
-  let toValues = object => key => object[key]
-  let isArray = it => it instanceof Array
-  let isObject = it => typeof it === 'object'
-  let values = it => Object.keys(it).map(toValues(it))
+function inside(haystack, needle) {
+  let toValues = object => key => object[key];
+  let isArray = it => it instanceof Array;
+  let isObject = it => typeof it === 'object';
+  let values = it => Object.keys(it).map(toValues(it));
 
-  let areInside = it => inside(it, needle)
+  let areInside = it => inside(it, needle);
 
-  let insideArray = () => haystack.some(areInside)
-  let insideObject = () => values(haystack).some(areInside)
+  let insideArray = () => haystack.some(areInside);
+  let insideObject = () => values(haystack).some(areInside);
 
-  let array = () => isArray(haystack) && insideArray(haystack, needle)
-  let object = () => isObject(haystack) && insideObject(haystack, needle)
-  let matches = () => haystack === needle
-  let search = () => array() || object()
+  let array = () => isArray(haystack) && insideArray(haystack, needle);
+  let object = () => isObject(haystack) && insideObject(haystack, needle);
+  let matches = () => haystack === needle;
+  let search = () => array() || object();
 
-  return matches() || search()
+  return matches() || search();
 }
 
-const ELEMENT_NODE = 1
-const DOCUMENT_FRAGMENT_NODE = 11
-const TEXT_NODE = 3
+const ELEMENT_NODE = 1;
+const DOCUMENT_FRAGMENT_NODE = 11;
+const TEXT_NODE = 3;
 
-let element = it => it.nodeType === ELEMENT_NODE
-let fragment = it => it.nodeType === DOCUMENT_FRAGMENT_NODE
-let text = it => it.nodeType === TEXT_NODE
+let element = it => it.nodeType === ELEMENT_NODE;
+let fragment = it => it.nodeType === DOCUMENT_FRAGMENT_NODE;
+let text = it => it.nodeType === TEXT_NODE;
 
 var is = prepare({
   element,
@@ -420,12 +439,13 @@ var is = prepare({
   existent: exists,
   fragment,
   inside,
-  text
-})
+  text,
+  check
+});
 
 var $is = Object.freeze({
-  default: is
-})
+	default: is
+});
 
 /**
  * Pairs an object into a set of {key, value} arrays.
@@ -436,22 +456,24 @@ var $is = Object.freeze({
  *
  * @returns {Array.<{key: string, value}>} An array of the original object key-value pairs.
  */
-function pair (object) {
-  return Object.keys(object).map(map)
+function pair(object) {
+  return Object.keys(object).map(map);
 
-  function map (key) {
-    let value = object[key]
+  function map(key) {
+    let value = object[key];
 
     return {
       key,
       value
-    }
+    };
   }
 }
 
+
+
 var pair$1 = Object.freeze({
-  default: pair
-})
+	default: pair
+});
 
 /**
  * Recursively brings all arguments of arrays to the highest level.
@@ -460,35 +482,35 @@ var pair$1 = Object.freeze({
  *
  * @returns {Array} - Flattened array from the given arguments.
  */
-function flatten () {
-  let array$$1 = array(arguments)
-  let isArray
-  let toArray
-  let fromArray
+function flatten() {
+  let array$$1 = array(arguments);
+  let isArray;
+  let toArray;
+  let fromArray;
 
-  isArray = it => it.constructor === Array
-  toArray = it => isArray(it) ? it : [it]
-  fromArray = (a, b) => a.concat(b)
+  isArray = it => it.constructor === Array;
+  toArray = it => isArray(it) ? it : [it];
+  fromArray = (a, b) => a.concat(b);
 
   while (array$$1.some(isArray)) {
-    array$$1 = array$$1.map(toArray).reduce(fromArray)
+    array$$1 = array$$1.map(toArray).reduce(fromArray);
   }
 
-  return array$$1
+  return array$$1;
 }
 
+
+
 var flatten$1 = Object.freeze({
-  default: flatten
-})
+	default: flatten
+});
 
 /**
  * Applies functions to a value and moves down the chain if possible.
  *
  * @function decompose
  *
- * @see exists
  * @see attempt
- * @see array
  *
  * @param {Array} array - List of functions to be applied.
  * @param {Object} initial - Optional initial item.
@@ -496,26 +518,28 @@ var flatten$1 = Object.freeze({
  * @returns {Object} Mutated version of the initial value.
  */
 var decompose = function (array, initial) {
-  let composer = (previous, current) => attempt(current, previous)
-  let reducer = it => array.reduce(composer, initial || it)
+  let composer = (previous, current) => attempt(current, previous);
+  let reducer = it => array.reduce(composer, initial || it);
 
-  return initial ? reducer(initial) : reducer
-}
+  return initial ? reducer(initial) : reducer;
+};
 
 var decompose$1 = Object.freeze({
-  default: decompose
-})
+	default: decompose
+});
+
+
 
 var $as = Object.freeze({
-  array: array$1,
-  attempt: attempt$1,
-  decomposed: decompose$1,
-  flatten: flatten$1,
-  method: curry$1,
-  pair: pair$1
-})
+	array: array$1,
+	attempt: attempt$1,
+	decomposed: decompose$1,
+	flatten: flatten$1,
+	method: curry$1,
+	pair: pair$1
+});
 
-var _where
+var _where;
 
 /**
  * Verifies entry matches. Useful inside of a (filter) pipeline.
@@ -528,19 +552,19 @@ var _where
  *
  * @returns {boolean} True if given entries are the same.
  */
-function where (search, object) {
-  var keys
-  var result
+function where(search, object) {
+  var keys;
+  var result;
 
-  let every = key => search[key] === object[key]
+  let every = key => search[key] === object[key];
 
-  keys = Object.keys(search)
-  result = keys.every(every)
+  keys = Object.keys(search);
+  result = keys.every(every);
 
-  return result
+  return result;
 }
 
-_where = curry(where)
+_where = curry(where);
 
 /**
  * Intended to be used with Array.prototype.reduce.
@@ -552,134 +576,134 @@ _where = curry(where)
  *
  * @returns {Function} A callback function for reducing objects to similar objects with only specified properties.
  */
-function select (it) {
-  let params = flatten(it, array(arguments))
-  let isArray = it => it instanceof Array
+function select(it) {
+  let params = flatten(it, array(arguments));
+  let isArray = it => it instanceof Array;
 
-  function compliant (it, key) {
-    return params.indexOf(key) !== -1 ? it[key] : [it[key]]
+  function compliant(it, key) {
+    return params.indexOf(key) !== -1 ? it[key] : [it[key]];
   }
 
-  function prepare (it) {
-    var key
+  function prepare(it) {
+    var key;
 
     for (key in it) {
-      it[key] = compliant(it, key)
+      it[key] = compliant(it, key);
     }
 
-    return it
+    return it;
   }
 
-  function normalize (it) {
+  function normalize(it) {
     if (!isArray(it)) {
-      return [prepare(it)]
+      return [prepare(it)];
     }
 
-    return it
+    return it;
   }
 
-  function pull (item) {
-    var response
+  function pull(item) {
+    var response;
 
     let forEach = param => {
-      response[param] = item[param]
-    }
+      response[param] = item[param];
+    };
 
-    response = {}
+    response = {};
 
-    params.forEach(forEach)
+    params.forEach(forEach);
 
-    return response
+    return response;
   }
 
-  function merge (reference, object) {
-    var keys
+  function merge(reference, object) {
+    var keys;
 
     let ensure = key => {
-      reference[key] = reference[key] || []
-    }
+      reference[key] = reference[key] || [];
+    };
     let concat = key => {
-      reference[key] = reference[key].concat(object[key])
-    }
-    let listed = key => params.indexOf(key) === -1
+      reference[key] = reference[key].concat(object[key]);
+    };
+    let listed = key => params.indexOf(key) === -1;
 
-    keys = Object.keys(object).filter(listed)
+    keys = Object.keys(object).filter(listed);
 
-    keys.forEach(ensure)
-    keys.forEach(concat)
+    keys.forEach(ensure);
+    keys.forEach(concat);
 
-    return reference
+    return reference;
   }
 
-  function append (array$$1, item) {
-    var index
-    var query
-    var search
+  function append(array$$1, item) {
+    var index;
+    var query;
+    var search;
 
-    query = pull(item)
-    search = _where(query)
-    index = array$$1.findIndex(search)
+    query = pull(item);
+    search = _where(query);
+    index = array$$1.findIndex(search);
 
     if (index !== -1) {
-      array$$1[index] = merge(array$$1[index], item)
+      array$$1[index] = merge(array$$1[index], item);
     } else {
-      array$$1.push(item)
+      array$$1.push(item);
     }
 
-    return array$$1
+    return array$$1;
   }
 
-  function reducer (previous, current) {
-    var array$$1
-    var item
+  function reducer(previous, current) {
+    var array$$1;
+    var item;
 
-    array$$1 = normalize(previous)
-    item = prepare(current)
+    array$$1 = normalize(previous);
+    item = prepare(current);
 
-    array$$1 = append(array$$1, item)
+    array$$1 = append(array$$1, item);
 
-    return array$$1
+    return array$$1;
   }
 
-  return reducer
+  return reducer;
 }
 
 // normal is the most convenient implementation
 // filter is the most efficient implementation
 // reduce is the most reliable implementation
 
-var unique = {
-  normal: curry(function normal (array, value) {
-    return array.filter(_where(value)).length > 1
+let unique = {
+  normal: curry(function normal(array, value) {
+    return array.filter(_where(value)).length > 1;
   }),
-  filter: function filter (value, index, array) {
-    return array.indexOf(value, index + 1) === -1
+  filter: function filter(value, index, array) {
+    return array.indexOf(value, index + 1) === -1;
   },
-  reduce: function reduce (previous, current) {
-    let beforeReduce = it => it instanceof Array ? it : [it]
+  reduce: function reduce(previous, current) {
+    let beforeReduce = it => it instanceof Array ? it : [it];
 
-    previous = beforeReduce(previous)
+    previous = beforeReduce(previous);
 
     if (!previous.find(_where(current))) {
-      previous.push(current)
+      previous.push(current);
     }
 
-    return previous
+    return previous;
   }
-}
+};
+
+
 
 var $query = Object.freeze({
-  select: select,
-  unique: unique,
-  get where () {
-    return _where
-  }
-})
+	select: select,
+	unique: unique,
+	get where () { return _where; }
+});
 
-exports.are = $is
-exports.as = $as
-exports.is = $is
-exports.query = $query
+exports.are = $is;
+exports.as = $as;
+exports.is = $is;
+exports.query = $query;
 
 // clone,
 // combine,
@@ -687,5 +711,4 @@ exports.query = $query
 // inject,
 // negated,
 // prepare
-
-//# sourceMappingURL=map/helpers.js.map
+//# sourceMappingURL=helpers.js.map

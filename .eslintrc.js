@@ -11,6 +11,7 @@ module.exports = {
   plugins: ['standard', 'promise', 'jsdoc'],
 
   rules: {
+    'import/no-duplicates': [0],
     'max-len': [2, { code: 80, ignoreComments: true }],
     'max-nested-callbacks': [2, { max: 3 }],
     'consistent-return': 2,
